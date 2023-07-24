@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppBar, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Divider, IconButton, Stack, Toolbar, Typography } from "@mui/material";
 import { brand_logo, MainLogo } from 'resources';
 import { appConfig } from 'config';
 
@@ -36,16 +36,16 @@ const ImgHeaderMain = styled('img')({
   margin: "10px",
   height: "auto",
   marginLeft: "20px",
-  borderRadius: "50%",
-  border: "1px solid  #e84338",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+  //borderRadius: "50%",
+  //border: "1px solid  #e84338",
+  //boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
 });
 
 const Span = styled('span')(({ theme }) => ({
   //background : "linear-gradient(to right, #c02529, #d43522)",
   //background: 'linear-gradient(45deg, #FF8F00 30%, #FFB74D 90%)',
   //background : "linear-gradient(to right, #007fff, #0059b2)",
-  background: 'linear-gradient(to right, #0059b2, #007fff )',
+  background: 'linear-gradient( #1E5645, #679889 )',
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   flexGrow: 1, 
@@ -82,6 +82,7 @@ const Header = (): React.ReactElement => {
             <ImgHeaderMain alt="brand logo main" src={MainLogo} />
             <ImgHeader alt="brand logo" src={brand_logo} />
         </DivHeader>
+        <Divider sx={{ margin: "0px 20px" }} orientation="vertical" flexItem />
         <Span> 
         {appConfig.appName}
         </Span>

@@ -52,7 +52,7 @@ export default function InputfieldABBY({ displayText }: any) {
         <Paper
             component="form"
             elevation={2}
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '90%', borderRadius: "25px", zIndex: 1, backgroundColor: "grey" }}
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '60%', borderRadius: "25px", zIndex: 1, backgroundColor: "grey" }}
             >
             <Tooltip title="Reset" placement="top"> 
                 <IconButton sx={{ p: '10px' }} aria-label="menu" onClick={handleResetInput}>

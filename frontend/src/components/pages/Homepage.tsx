@@ -37,7 +37,8 @@ const SearchSection = styled('section')(({ theme }) => ({
 
 const Span = styled('span')(({ theme }) => ({
  //background : "linear-gradient(to right, #e84338, #b8261c)",
- background : "linear-gradient(to right, #007fff, #0059b2)",
+ //background : "linear-gradient(to right, #007fff, #0059b2)",
+ background: 'linear-gradient(to right, #266c57, #449f7b )',
  WebkitBackgroundClip: "text",
  WebkitTextFillColor: "transparent",
  fontSize: "2.8rem",
@@ -64,7 +65,7 @@ const Homepage = () => {
     <>
     { !appConfig.searchBarInHeader && (
       <SearchSection>
-        <InputfieldABBY defaultText={appConfig.searchVariables.searchInputPlaceholder} />
+        <InputfieldABBY displayText={appConfig.searchVariables.searchInputPlaceholder} />
       </SearchSection> 
     )}
     {

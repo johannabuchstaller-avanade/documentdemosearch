@@ -42,17 +42,14 @@ export default function AbbySearch(props: any) {
                         setSearchAnswer(response.data.answer)
                         let text;
                         if(response.data.results.length > 0) {
-                            if(lang === "en-us") {
-                                text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.3).map((doc: any, index: number) => index+ ": "+doc.document.content + "\n page number: " + String(doc.pageNumber)).join("\n\n");
-                            } else {
-                                text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.3).map((doc: any, index: number) => index+ ": "+doc.document.translated_text + "\n page number: " + String(doc.pageNumber)).join("\n\n");
-                            }
+                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.3).map((doc: any, index: number) => index+ ": "+doc.document.content + "\n page number: " + String(doc.page_number)).join("\n\n");
+
                             props.handleLanguage(lang);
                             props.handleSearchResult(text);
                             const titlesAndSources = response.data.results.map((item: any)  => ({
-                                title: item.document.title,
-                                source: item.document.source,
-                                page: item.document.pageNumber
+                                title: item.document.title ?? "",
+                                source: item.document.document_link,
+                                page: item.document.page_number
                             }));
                             props.handleTitleSources(titlesAndSources);
                         } else {
