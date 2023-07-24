@@ -1,0 +1,49 @@
+{
+    "routes": [
+      {
+        "route": "/homepage",
+        "serve": "/",
+        "statusCode": 301
+      },
+      { 
+        "route": "/userinfo" 
+      },
+      { 
+        "route": "/about" 
+      },
+      { 
+        "route": "/api/search" 
+      },
+      { 
+        "route": "/api/calculateSummaryScore" 
+      },
+      { 
+        "route": "/api/textsummary" 
+      },
+      { 
+        "route": "/details/*" 
+      },
+      {
+        "route": "/api/*"
+      },
+      {
+        "route": "/storage"
+      },
+      {
+        "route": "/*",
+        "serve": "/homepage",
+        "statusCode": 200
+      }
+    ],
+    "platformErrorOverrides": [
+      {
+        "errorType": "Unauthenticated",
+        "serve": "/userinfo"
+      },
+      {
+        "errorType": "NotFound",
+        "serve": "/index.html",
+        "statusCode": 200
+      }
+    ]
+  }

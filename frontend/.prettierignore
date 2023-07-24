@@ -1,0 +1,17 @@
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+*.html
+
+# Ignore all JSON files:
+*.json
+
+# Ignore folders
+/node_modules
+
+# ignore readme file:
+*.md
+*.txt
+*.env
