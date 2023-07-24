@@ -38,12 +38,13 @@ export default function AbbySearch(props: any) {
                 // /api/search is a proxy to the Azure Search API, https://abbysearchnode.azurewebsites.net
                 axios.post('/api/search?', body)
                     .then(response => {
+                        console.log(response.data);
                         setSearchRes(response.data.results);
                         setSearchAnswer(response.data.answer)
                         let text;
                         if(response.data.results.length > 0) {
-                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.3).map((doc: any, index: number) => index+ ": "+doc.document.content + "\n page number: " + String(doc.page_number)).join("\n\n");
-
+                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => index+ ":\n\n "+doc.document.content + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
+                            console.log("*********text********: ", text);
                             props.handleLanguage(lang);
                             props.handleSearchResult(text);
                             const titlesAndSources = response.data.results.map((item: any)  => ({
@@ -51,6 +52,7 @@ export default function AbbySearch(props: any) {
                                 source: item.document.document_link,
                                 page: item.document.page_number
                             }));
+                            console.log("titlesAndSources: ", titlesAndSources);
                             props.handleTitleSources(titlesAndSources);
                         } else {
                             text = "No results found";

@@ -30,9 +30,9 @@ export default function AbbyResult(props: any) {
         {
             (props.lang === "en-us") 
             ?
-            <AlignItemsList cardwidth={"80%"} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.source} />
+            <AlignItemsList cardwidth={"80%"} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} />
             :
-            <AlignItemsList cardwidth={"80%"} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.source} />
+            <AlignItemsList cardwidth={"80%"} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} />
         }
         </div>
     });

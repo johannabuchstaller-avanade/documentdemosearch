@@ -5,7 +5,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { openai } from 'resources';
 import Tooltip from 'components/common/Tooltip';
-import { handleFetchAzureOpenAIanswerJsonApp, handleFetchAzureOpenAIanswerJsonAppDE } from 'actions/openaiAnswer';
+import { handleFetchAzureOpenAIanswerJsonApp, handleFetchGPT4 } from 'actions/openaiAnswer';
 
 export default function AbbyAnswer(props: any) {
     const [ answertext, setAnswertext ] = React.useState('');
@@ -17,35 +17,23 @@ export default function AbbyAnswer(props: any) {
     React.useEffect(() => {
         const generateAnswer = async() => {
             if(props.searchText) {
-
+           
                 setIsLoading(true);
-                if(props.language === "en-us") {
 
-                    handleFetchAzureOpenAIanswerJsonApp(props.context, props.searchText)
-                    .then((result) => {
-    
-                        setAnswertext(result.answer)
 
-                        setTitlesource(props.titlesources[result.context]);
-                        setIsLoading(false);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-                } else {
-                    handleFetchAzureOpenAIanswerJsonAppDE(props.context, props.searchText)
-                    .then((result) => {
-    
-                        setAnswertext(result.answer)
+                handleFetchGPT4(props.context, props.searchText)
+                .then((result) => {
 
-                        setTitlesource(props.titlesources[result.context]);
-                        console.log(props.titlesources[result.context]);
-                        setIsLoading(false);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
-                }
+                    setAnswertext(result.answer)
+                    console.log("result: ", result);
+                    console.log("title sources: ", props.titlesources[result.context]);
+                    setTitlesource(props.titlesources[result.context]);
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+                
             }
         }
         generateAnswer();

@@ -48,7 +48,7 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
             null
           }
           
-          <Chip label={"source: "+source} color="primary" variant="outlined" sx={{
+          <Chip label={<a target="_blank" rel="noopener noreferrer" href={source}> source </a>} color="primary" variant="outlined" sx={{
             fontSize: "12px",
             maxWidth: "calc(50% - 4px)",
             overflow: "hidden",

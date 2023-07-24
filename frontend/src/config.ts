@@ -3,8 +3,8 @@ export const appConfig = {
     "loadingText": "Connecting to App",
     "searchVariables": {
         "searchInputPlaceholder": "Search for documents...",
-        "indexName": "keynote-index",
-        "semanticConfigName": "default_en",
+        "indexName": "index-tables-from-pdf-bahamas",
+        "semanticConfigName": "documentsearch-bahamas-semantic-config",
         "language": "en-us",
     },
     "showChatbot": false,

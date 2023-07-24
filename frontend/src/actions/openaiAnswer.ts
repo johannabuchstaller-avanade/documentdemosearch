@@ -130,6 +130,7 @@ export async function handleFetchAzureOpenAIanswerJsonAccenture(context: string,
         });
         const data = await response.json();
         const jsans = JSON.parse(data.choices[0].text)
+        console.log("jsans: ", jsans);
         finalanswer = {answer: jsans.answer, context: jsans.context}
       } else{
         finalanswer = {answer: "I don't know", context: null}
@@ -258,5 +259,68 @@ export async function handleFetchAzureOpenAIanswerJsonAppDE(context: string, sea
     }
   return finalanswer;
 }
+
+
+export async function handleFetchGPT4(context: string, searchText: string): Promise<any> {
+  let finalanswer;
+  if(context) {
+      const prompt = `
+      Rules:
+        •\tYou are an answering bot whose primary goal is to help users to answer questions based on the context.
+        •\tProvide concise and full answer that are polite and professional. 
+        •\tAnswer questions truthfully based on context provided.
+        •\tDo not answer questions that are not related to the context and respond with \"I am not sure about that!\".
+        •\tIf you do not know the answer to a question, respond by saying “I do not know the answer to your question.”
+        •\tThere are multiple context, which has content and metadata.
+        •\tAnswer can be based on any of the context. You could use multiple context to answer the question.
+        •\tYou should search answer in the field : content.
+        •\tAnswer format should be a valid json: \t {"answer": Answer which is a valid string, "context": a number to represent which context was used for the answer starts from 0 else null.}. .
+      
+
+      Example:
+        Context 0: Flappy is a bird. It can fly. It can also swim. It is a bird. 
+
+        Context 1: Flappy is a good bird.
+
+        Question: What can Flappy do?
+        Answer: {"answer": "Flappy can fly and swim.", "context": 0}
+
+
+      Context:
+        ${context}`
+
+      const inputdata = {
+          model: "gpt4-8k-demo",
+          messages: [
+            { "role": "system", "content": prompt },
+            { "role": "user", "content": searchText }
+          ],
+          temperature: 0.0,
+          max_tokens: 550,
+          top_p: 0.95,
+          frequency_penalty: 0,
+          presence_penalty: 0,
+      }
+      const endpoint = process.env.REACT_APP_OPENAI_API_BASE_CHAT ?? '';
+      const apikey = process.env.REACT_APP_OPENAI_API_KEY_CHAT ?? '';
+
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "api-key": apikey, // Replace with your API key
+        },
+        body: JSON.stringify(inputdata),
+      });
+      const data = await response.json();
+      console.log(data);
+      const jsans = JSON.parse(data.choices[0].message.content)
+      finalanswer = {answer: jsans.answer, context: jsans.context}
+    } else{
+      finalanswer = {answer: "Sorry, I do not know!", context: null}
+    }
+  return finalanswer;
+}
+
 
 

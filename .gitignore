@@ -3,6 +3,4 @@
 # dependencies
 .github
 
-/api
-
 /infrastructure
