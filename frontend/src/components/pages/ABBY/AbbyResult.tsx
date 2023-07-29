@@ -1,9 +1,7 @@
 import React from 'react';
 import Stack from '@mui/material/Stack';
-import ShortCardDisplay from 'components/common/ShortCardDisplay';
-import AlignItemsList from './AlignItemsList';
 import { handleKeyPhaseExtraction } from 'actions/openaiAnswer';
-
+import AccordionResult from './AccordionResult';
 
 export default function AbbyResult(props: any) {
 
@@ -26,13 +24,13 @@ export default function AbbyResult(props: any) {
 
     let results;
     results = props.documents.map((result: any, index: number) => {
-        return <div key={index}>
+        return <div key={index} style={{ width: '100%', margin: "3px" }}>
         {
             (props.lang === "en-us") 
             ?
-            <AlignItemsList cardwidth={"80%"} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} />
+            <AccordionResult value={index} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html}/>
             :
-            <AlignItemsList cardwidth={"80%"} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} />
+            <AccordionResult value={index} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html}/>
         }
         </div>
     });

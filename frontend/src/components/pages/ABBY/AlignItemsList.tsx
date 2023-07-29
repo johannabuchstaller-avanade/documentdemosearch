@@ -68,9 +68,9 @@ export default function AlignItemsList({cardtext, score, kind, keyphrases, sourc
       return (
         <React.Fragment>
           {/* <span dangerouslySetInnerHTML={{ __html: highlightedText }}></span> */}
-          <ReactMarkdown
+          {/* <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
-              >{highlightedText}</ReactMarkdown>
+              >{highlightedText}</ReactMarkdown> */}
           {cardtext.length > 200 && (
             <Button
               disableFocusRipple
@@ -132,8 +132,8 @@ export default function AlignItemsList({cardtext, score, kind, keyphrases, sourc
             </React.Fragment>
           }
         />
-        <Divider  variant="inset" component="div" orientation='vertical' />
-        <Typography sx={{ paddingBottom: "0px" }} variant="caption" color="green" component="div"> Score: {((score/4)*100).toFixed(1)}%</Typography>
+        {/* <Divider  variant="inset" component="div" orientation='vertical' />
+        <Typography sx={{ paddingBottom: "0px" }} variant="caption" color="green" component="div"> Score: {((score/4)*100).toFixed(1)}%</Typography> */}
       </ListItem>
       
     </List>

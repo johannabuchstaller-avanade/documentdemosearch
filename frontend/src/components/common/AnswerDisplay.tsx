@@ -6,8 +6,9 @@ import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
-const TypographyItem = styled(Typography)(({ theme }) => ({
+const TypographyItem = styled("div")(({ theme }) => ({
     display: "flex",
     fontSize: '14px',
     fontWeight: '400',
@@ -23,7 +24,12 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
         <Stack direction="row" sx={{margin: 0, padding: 0}}><Typography variant="subtitle2" sx={{marginTop: "3px"}}>Question:  &nbsp;</Typography><Typography variant="subtitle1" fontStyle="italic" color="green">  &nbsp;{question}</Typography></Stack>
         <Divider sx={{ marginTop: "15px" }}/>
         <div style={{margin:"0px"}}>
-          <TypographyItem><em>Answer: &nbsp;</em>&nbsp; {answer}</TypographyItem>
+          <TypographyItem>
+            <em>Answer: &nbsp;</em>&nbsp; 
+            <ReactMarkdown>
+              {answer}
+            </ReactMarkdown>
+          </TypographyItem>
           {
             page
             ?
@@ -33,7 +39,8 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
           }
         </div>
         <Divider sx={{ marginBottom: "15px" }}/>
-        <Stack direction="row" spacing={1} sx={{display: "flex", justifyContent: "space-between"}}>
+        <Typography variant="subtitle2" sx={{marginTop: "3px"}}><i>Click below for more details related to the source​.</i></Typography>
+        {/* <Stack direction="row" spacing={1} sx={{display: "flex", justifyContent: "space-between"}}>
           {
             title
             ?
@@ -47,15 +54,22 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
             :
             null
           }
+          {
+            source
+            ?
+            <Chip label={<a target="_blank" rel="noopener noreferrer" href={source}> source </a>} color="primary" variant="outlined" sx={{
+              fontSize: "12px",
+              maxWidth: "calc(50% - 4px)",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }} />
+            :
+            null
+          }
           
-          <Chip label={<a target="_blank" rel="noopener noreferrer" href={source}> source </a>} color="primary" variant="outlined" sx={{
-            fontSize: "12px",
-            maxWidth: "calc(50% - 4px)",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }} />
-        </Stack>
+          
+        </Stack> */}
       </CardContent>
     </Card>
 

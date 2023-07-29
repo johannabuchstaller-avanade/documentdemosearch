@@ -19,4 +19,5 @@ export interface IUIState {
   appQuery: string;
   context: Array<string>;
   metadata: Array<Object>;
+  loading: boolean;
 }

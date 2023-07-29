@@ -3,7 +3,7 @@ export const appConfig = {
     "loadingText": "Connecting to App",
     "searchVariables": {
         "searchInputPlaceholder": "Search for documents...",
-        "indexName": "index-tables-from-pdf-bahamas",
+        "indexName": "index-tables-from-pdf-bahamas-v4",
         "semanticConfigName": "documentsearch-bahamas-semantic-config",
         "language": "en-us",
     },

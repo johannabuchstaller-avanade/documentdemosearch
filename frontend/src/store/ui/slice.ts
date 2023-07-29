@@ -16,6 +16,7 @@ const initialState: IUIState = {
   appQuery: "",
   context: [],
   metadata: [],
+  loading: true
 };
 
 const uiSlice = createSlice({
@@ -81,6 +82,9 @@ const uiSlice = createSlice({
       state.context = [];
       state.metadata = [];
     },
+    setLoading(state, action: PayloadAction<boolean>) {
+      state.loading = action.payload;
+    }
   },
 });
 
@@ -103,6 +107,8 @@ export const {
   emptySearchQuery,
   setContextData,
   setMetadata,
+  clearSearchData,
+  setLoading
 } = uiSlice.actions;
 
 export const selectToastState = (state: RootState): IToast => state.ui.toast;
@@ -117,5 +123,7 @@ export const selectChatOpen = (state: RootState): boolean => state.ui.chatOpen;
 export const selectAppQuery = (state: RootState): string => state.ui.appQuery;
 export const selectContext = (state: RootState): Array<string> => state.ui.context;
 export const selectMetadata = (state: RootState): Array<Object> => state.ui.metadata;
+export const selectLoading = (state: RootState): boolean => state.ui.loading;
+
 
 export const uiReducer = uiSlice.reducer;

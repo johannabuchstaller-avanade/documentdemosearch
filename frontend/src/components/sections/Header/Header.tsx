@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppBar, Divider, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import { AppBar, Divider, IconButton, Stack, Toolbar, Button } from "@mui/material";
 import { brand_logo, MainLogo } from 'resources';
 import { appConfig } from 'config';
 
@@ -9,6 +9,10 @@ import HeaderAvatarMenu from "./HeaderAvatarMenu";
 import InputfieldABBY from "components/common/InputFieldABBY";
 
 import Tooltip from 'components/common/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
+import { useAppDispatch } from "store/hooks";
+import { openDialog } from 'store/ui/slice';
+import SearchGuideDialog from "./SearchGuideDialog";
 
 //import ShowData from "./ShowData";
 
@@ -65,6 +69,12 @@ const DivButtons = styled('div')({
 
 const Header = (): React.ReactElement => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+
+  const handleInfoOpen = () => {
+    dispatch(openDialog());
+    console.log("open dialog");
+  }
 
   return (
     <AppBar
@@ -93,6 +103,11 @@ const Header = (): React.ReactElement => {
             </DivSearch>
           )}
 
+          <Button variant="contained" startIcon={<InfoIcon />} color="secondary" onClick={handleInfoOpen}>
+             Search Guide
+          </Button>
+
+
         
             { appConfig.uploadEnabled && (
               <DivButtons>
@@ -103,7 +118,9 @@ const Header = (): React.ReactElement => {
                 </Stack>
               </DivButtons>
             )}  
+
       </Toolbar>
+      <SearchGuideDialog />
       
     </AppBar>
   );

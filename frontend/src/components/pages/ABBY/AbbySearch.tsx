@@ -1,20 +1,21 @@
 import * as React from 'react';
 import axios from 'axios';
 import AbbyResult from './AbbyResult';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { Avatar } from '@mui/material';
 import { cogsearch } from 'resources';
 import Tooltip from 'components/common/Tooltip';
+import { useAppDispatch, useAppSelector } from 'store/hooks';
 import { appConfig } from 'config';
-
+import { setLoading, selectLoading } from 'store/ui/slice';
 
 export default function AbbySearch(props: any) {
     const [searchRes, setSearchRes] = React.useState<any[]>([]);
     const [ searchAnswer, setSearchAnswer ] = React.useState("");
-    const [ isLoading, setIsLoading ] =  React.useState(true);
+    const dispatch = useAppDispatch();
+    const loading = useAppSelector(selectLoading);
+    
     const [ langData, setLangData ] = React.useState("");
 
     const index = appConfig.searchVariables.indexName;
@@ -23,9 +24,11 @@ export default function AbbySearch(props: any) {
 
     
     React.useEffect(() => {
+        dispatch(setLoading(true));
         const searchAzure = async () => {
             if(props.searchText) {
                 setLangData(lang);
+
                 const body = {
                     q: props.searchText,
                     top: 3,
@@ -35,7 +38,7 @@ export default function AbbySearch(props: any) {
                     indexname: index,
                     semsconfig: semsconf
                 };
-                // /api/search is a proxy to the Azure Search API, https://abbysearchnode.azurewebsites.net
+                // /api/search is a proxy to the Azure Search API, https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?
                 axios.post('/api/search?', body)
                     .then(response => {
                         console.log(response.data);
@@ -43,14 +46,15 @@ export default function AbbySearch(props: any) {
                         setSearchAnswer(response.data.answer)
                         let text;
                         if(response.data.results.length > 0) {
-                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => index+ ":\n\n "+doc.document.content + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
+                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
                             console.log("*********text********: ", text);
                             props.handleLanguage(lang);
                             props.handleSearchResult(text);
                             const titlesAndSources = response.data.results.map((item: any)  => ({
-                                title: item.document.title ?? "",
+                                title: item.document.title,
                                 source: item.document.document_link,
-                                page: item.document.page_number
+                                page: item.document.page_number,
+                                html: item.document.content_html 
                             }));
                             console.log("titlesAndSources: ", titlesAndSources);
                             props.handleTitleSources(titlesAndSources);
@@ -60,28 +64,20 @@ export default function AbbySearch(props: any) {
                             props.handleTitleSources([]);
                         }
 
-                        setIsLoading(false);
+                        // setIsLoading(false);
                     })
                     .catch(error => {
                         console.error(error);
                     });       
-
-                
             }
         };
         searchAzure();
         
-    }, [props.searchText]);
+    }, [props.searchText, dispatch, setLoading]);
 
     return (
         <>
-        {
-            isLoading
-            ?
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress />
-            </Box>
-            :
+        { !loading && (
             <Stack spacing={2} sx={{ display: "flex", alignItems: "center" }}>
                 <Stack spacing={2} direction="row" sx={{ display: "flex", alignItems: "center", margin: "10px" }}>
                     <Tooltip title="Azure Cognitive Search" placement="top">
@@ -100,7 +96,7 @@ export default function AbbySearch(props: any) {
                 }
                 <AbbyResult documents={searchRes} query={props.searchText} lang={langData} />
             </Stack>
-        }
+        )}
         </>
     )
 }

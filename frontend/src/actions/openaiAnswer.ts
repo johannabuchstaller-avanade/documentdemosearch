@@ -79,73 +79,6 @@ export async function handleSummarizeAva(context: string, question: string): Pro
 }
 
 
-
-export async function handleFetchAzureOpenAIanswerJsonAccenture(context: string, searchText: string): Promise<any> {
-  let finalanswer;
-
-  try {
-  
-    if(context) {
-        const prompt = `
-        Follow the rules stricly and answer the Question from given context.
-
-        Rules:
-          1. Give result in JSON format, {"answer": Answer which is a valid string, "context": a number to represent which context was used for the answer starts from 0 else null.}.
-          2. Answer the question as truthfully as possible only from the provided context below, and if the answer is not in the context below, answer must be 'I don't know'.
-          3. Process the answer in good formatting and emphasize the important parts of answer with appropriate Markdown.
-          4. Answer the question in detail and in a way that is easy to understand.
-
-        Example:
-          Context 0: Flappy is a bird. It can fly. It can also swim. It is a bird.
-
-          Context 1: Flappy is a good bird.
-
-          Question: What can Flappy do?
-          Answer: {"answer": "Flappy can fly and swim.", "context": 0}
-        
-        Context: \n${context}
-        
-        Question: ${searchText}
-        
-        Answer:`
-        const inputdata = {
-            prompt: prompt,
-            temperature: 0.0,
-            max_tokens: 500,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
-            model: "text-davinci-003"
-        }
-        const endpoint = process.env.REACT_APP_AZURE_OPENAI_ENDPOINT ?? '';
-        const apikey = process.env.REACT_APP_AZURE_OPENAI_APIKEY ?? '';
-
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "api-key": apikey, // Replace with your API key
-          },
-          body: JSON.stringify(inputdata),
-        });
-        const data = await response.json();
-        const jsans = JSON.parse(data.choices[0].text)
-        console.log("jsans: ", jsans);
-        finalanswer = {answer: jsans.answer, context: jsans.context}
-      } else{
-        finalanswer = {answer: "I don't know", context: null}
-      }
-  } catch (error) {
-    console.error("An error occurred in OpenAI: ", error);
-    finalanswer = { answer: "I don't know", context: null };
-  }
-  // console.log("finalanswer: ", finalanswer);
-  return finalanswer;
-}
-
-
-
-
 export async function handleFetchAzureOpenAIanswerJsonApp(context: string, searchText: string): Promise<any> {
   //const prompt = `\n\n\nContext: \n${context}\n\n Answer the question as truthfully as possible only from the provided Context above, and if the answer is not in the context above, reply 'I don't know'. Give result in json format, {"answer": answer, "context": a number to represent which context was used for the answer.}. Answer should have good formatting, spacing and use markdowns. \n\nQ: ${searchText}\nA:`
   let finalanswer;
@@ -203,87 +136,46 @@ export async function handleFetchAzureOpenAIanswerJsonApp(context: string, searc
 
 
 
-
-export async function handleFetchAzureOpenAIanswerJsonAppDE(context: string, searchText: string): Promise<any> {
-  //const prompt = `\n\n\nContext: \n${context}\n\n Answer the question as truthfully as possible only from the provided Context above, and if the answer is not in the context above, reply 'I don't know'. Give result in json format, {"answer": answer, "context": a number to represent which context was used for the answer.}. Answer should have good formatting, spacing and use markdowns. \n\nQ: ${searchText}\nA:`
-  let finalanswer;
-  if(context) {
-      const prompt = `
-      Befolgen Sie die Regeln strikt und beantworten Sie die Frage aus dem gegebenen Kontext.
-
-      Die Regeln:
-        1. Geben Sie das Ergebnis im JSON-Format, {"answer": Antwort, die eine gültige Zeichenkette ist, "Kontext": eine Zahl, die angibt, welcher Kontext für die Antwort verwendet wurde, beginnend mit 0, sonst null.}.
-        2. Beantworte die Frage so wahrheitsgetreu wie möglich nur aus dem unten angegebenen Kontext, und wenn die Antwort nicht aus dem unten angegebenen Kontext stammt, muss die Antwort "Ich weiß nicht" lauten.
-        3. Verarbeiten Sie die Antwort in einer guten Formatierung und heben Sie die wichtigen Teile der Antwort mit einem geeigneten Markdown hervor.
-        4. Beantworten Sie die Frage detailliert und in leicht verständlicher Form.
-
-      Beispiel:
-        0: Flappy ist ein Vogel. Er kann fliegen. Er kann auch schwimmen. Er ist ein Vogel.
-
-        1: Flappy ist ein guter Vogel.
-
-        Frage: Was kann Flappy tun?
-        Antwort: {"answer": "Flappy kann fliegen und schwimmen.", "Kontext": 0}
-      
-      Kontext: \n${context}
-      
-      Frage: ${searchText}
-      
-      Antwort:`
-      const inputdata = {
-          prompt: prompt,
-          temperature: 0.0,
-          max_tokens: 550,
-          top_p: 1,
-          frequency_penalty: 0,
-          presence_penalty: 0,
-          model: "text-davinci-003"
-      }
-      const endpoint = process.env.REACT_APP_AZURE_OPENAI_ENDPOINT ?? '';
-      const apikey = process.env.REACT_APP_AZURE_OPENAI_APIKEY ?? '';
-
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "api-key": apikey, // Replace with your API key
-        },
-        body: JSON.stringify(inputdata),
-      });
-      const data = await response.json();
-      console.log(data.choices[0].text);
-      const jsans = JSON.parse(data.choices[0].text)
-      finalanswer = {answer: jsans.answer, context: jsans.context}
-    } else{
-      finalanswer = {answer: "Ich weiß nicht", context: null}
-    }
-  return finalanswer;
-}
-
-
 export async function handleFetchGPT4(context: string, searchText: string): Promise<any> {
   let finalanswer;
   if(context) {
       const prompt = `
       Rules:
-        •\tYou are an answering bot whose primary goal is to help users to answer questions based on the context.
-        •\tProvide concise and full answer that are polite and professional. 
+        Follow these rules strictly and answer the Question from given context.
+        •\tYou are an answering bot whose primary goal is to help users to answer questions based on the context clearly.
+        •\tProvide full answer that are polite and professional. 
         •\tAnswer questions truthfully based on context provided.
         •\tDo not answer questions that are not related to the context and respond with \"I am not sure about that!\".
         •\tIf you do not know the answer to a question, respond by saying “I do not know the answer to your question.”
-        •\tThere are multiple context, which has content and metadata.
+        •\tThere are multiple context, which has Context and metadata.
+        •\tThe metadatas are: document link and page number.
         •\tAnswer can be based on any of the context. You could use multiple context to answer the question.
-        •\tYou should search answer in the field : content.
-        •\tAnswer format should be a valid json: \t {"answer": Answer which is a valid string, "context": a number to represent which context was used for the answer starts from 0 else null.}. .
+        •\tAnalyze all context and if there are comparable answers, give detailed answer.
+        •\tIf there are multiple answers, give all answers.
+        •\tIf there are contractions in the answer, expand them.
+        •\tThe information in the context can be a markdown table, and if two contexts have answer to the question, give both answers.
+        •\tAnalyze all context and if there are comparable answers, give detailed answer.
+        •\tYou should search answer in the field : Context.
+        •\tAnswer format should be answer with sources in markdown and page numbers.
       
 
       Example:
-        Context 0: Flappy is a bird. It can fly. It can also swim. It is a bird. 
+        Context 0: 
+            Flappy is a bird. It can fly. It can also swim. It is a bird. 
+            
+            document link: https://flappy1.com
 
-        Context 1: Flappy is a good bird.
+            page number: 5
+
+        Context 1: 
+            Flappy is a good bird. Flappy can run.
+
+            document link: https://flappy2.com
+
+            page number: 8
 
         Question: What can Flappy do?
-        Answer: {"answer": "Flappy can fly and swim.", "context": 0}
+        Answer: According to [Context 1](https://flappy1.com) at page number 5, Flappy can fly and swim. In addition, according to [Context 2](https://flappy2.com) at page number 8, Flappy can run. Thus, it can be concluded that flappy can fly, swim and run.
 
 
       Context:
@@ -295,8 +187,8 @@ export async function handleFetchGPT4(context: string, searchText: string): Prom
             { "role": "system", "content": prompt },
             { "role": "user", "content": searchText }
           ],
-          temperature: 0.0,
-          max_tokens: 550,
+          temperature: 0.1,
+          max_tokens: 800,
           top_p: 0.95,
           frequency_penalty: 0,
           presence_penalty: 0,
@@ -314,10 +206,10 @@ export async function handleFetchGPT4(context: string, searchText: string): Prom
       });
       const data = await response.json();
       console.log(data);
-      const jsans = JSON.parse(data.choices[0].message.content)
-      finalanswer = {answer: jsans.answer, context: jsans.context}
+      const answer = data.choices[0].message.content
+      finalanswer = answer
     } else{
-      finalanswer = {answer: "Sorry, I do not know!", context: null}
+      finalanswer = "Sorry, I don't know the answer to your question."
     }
   return finalanswer;
 }

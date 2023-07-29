@@ -1,34 +1,29 @@
 import React from 'react';
 import { Avatar, Stack, Typography } from '@mui/material';
 import AnswerDisplay from 'components/common/AnswerDisplay';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import { openai } from 'resources';
 import Tooltip from 'components/common/Tooltip';
-import { handleFetchAzureOpenAIanswerJsonApp, handleFetchGPT4 } from 'actions/openaiAnswer';
+import { handleFetchGPT4 } from 'actions/openaiAnswer';
+import { useAppDispatch, useAppSelector } from 'store/hooks'
+import { setLoading, selectLoading } from 'store/ui/slice';
+
 
 export default function AbbyAnswer(props: any) {
-    const [ answertext, setAnswertext ] = React.useState('');
-    const [ titlesource, setTitlesource ] = React.useState<any>();
-    const [ isLoading, setIsLoading ] = React.useState(true);
- 
-    
+    const [ answertext, setAnswertext ] = React.useState('');  
+    const dispatch = useAppDispatch();
+    const loading = useAppSelector(selectLoading);
 
     React.useEffect(() => {
+        dispatch(setLoading(true));
         const generateAnswer = async() => {
             if(props.searchText) {
            
-                setIsLoading(true);
-
-
                 handleFetchGPT4(props.context, props.searchText)
                 .then((result) => {
-
-                    setAnswertext(result.answer)
                     console.log("result: ", result);
-                    console.log("title sources: ", props.titlesources[result.context]);
-                    setTitlesource(props.titlesources[result.context]);
-                    setIsLoading(false);
+                    setAnswertext(result)
+                    dispatch(setLoading(false));
+                    
                 })
                 .catch(error => {
                     console.error(error);
@@ -38,35 +33,23 @@ export default function AbbyAnswer(props: any) {
         }
         generateAnswer();
         
-        }, [props.searchText]);
+        }, [props.searchText, props.context, dispatch, setLoading]);
    
 
     return (
-        <Stack spacing={2} sx={{ display: "flex", alignItems: "center", width: "100%", boxSizing: "border-box" }}>
+        <>
+        { !loading && (
+            <Stack spacing={2} sx={{ display: "flex", alignItems: "center", width: "100%", boxSizing: "border-box" }}>
 
-            <Stack spacing={2} direction="row" sx={{ display: "flex", alignItems: "center", margin: "10px" }}>
-                    <Tooltip title="OpenAI GPT-3" placement="top">
-                        <Avatar alt="search" src={openai} sx={{padding: "4px", "& img": {objectFit: "contain"}}} />
-                    </Tooltip>
-                    <Typography variant="h6" sx={{ m: 4 }}>Answer</Typography>
-            </Stack>
-            {
-                isLoading
-                ?
-                <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <CircularProgress />
-                </Box>
-                :
-                <>
-                {
-                    titlesource
-                    ?
-                    <AnswerDisplay cardwidth={"100%"} question={props.searchText} answer={answertext} source={titlesource.source} title={titlesource.title} page={titlesource.page} />
-                    :
-                    <AnswerDisplay cardwidth={"100%"} question={props.searchText} answer={answertext} source="" title="" page="" />
-                }
-                </>
-            }
-        </Stack>
+                <Stack spacing={2} direction="row" sx={{ display: "flex", alignItems: "center", margin: "10px" }}>
+                        <Tooltip title="OpenAI GPT-3" placement="top">
+                            <Avatar alt="search" src={openai} sx={{padding: "4px", "& img": {objectFit: "contain"}}} />
+                        </Tooltip>
+                        <Typography variant="h6" sx={{ m: 4 }}>Answer</Typography>
+                </Stack>
+                <AnswerDisplay cardwidth={"100%"} question={props.searchText} answer={answertext} source="" title="" page="" />
+            </Stack>  
+        )}
+        </>      
       );
 };
