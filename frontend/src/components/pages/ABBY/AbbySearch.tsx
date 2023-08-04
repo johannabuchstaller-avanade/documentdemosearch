@@ -33,20 +33,21 @@ export default function AbbySearch(props: any) {
                     q: props.searchText,
                     top: 3,
                     skip: 0,
-                    type: "semantic",
+                    type: "full",
                     lang: lang,
                     indexname: index,
                     semsconfig: semsconf
                 };
                 // /api/search is a proxy to the Azure Search API, https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?
-                axios.post('/api/search?', body)
+                axios.post('https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?', body)
                     .then(response => {
                         console.log(response.data);
                         setSearchRes(response.data.results);
                         setSearchAnswer(response.data.answer)
                         let text;
                         if(response.data.results.length > 0) {
-                            text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
+                            //text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
+                            text = response.data.results.filter((doc: any) => doc.score > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
                             console.log("*********text********: ", text);
                             props.handleLanguage(lang);
                             props.handleSearchResult(text);
@@ -54,7 +55,7 @@ export default function AbbySearch(props: any) {
                                 title: item.document.title,
                                 source: item.document.document_link,
                                 page: item.document.page_number,
-                                html: item.document.content_html 
+                                html: item.document.content_html
                             }));
                             console.log("titlesAndSources: ", titlesAndSources);
                             props.handleTitleSources(titlesAndSources);

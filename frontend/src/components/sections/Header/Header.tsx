@@ -30,8 +30,9 @@ const DivSearch = styled('div')({
 });
 
 const ImgHeader = styled('img')({
-  width:"90px",
+  width:"50px",
   height: "auto",
+  margin: "10px",
   marginLeft: "8px",
 });
 

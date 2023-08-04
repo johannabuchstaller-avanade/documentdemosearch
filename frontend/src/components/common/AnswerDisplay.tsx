@@ -10,6 +10,7 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 
 const TypographyItem = styled("div")(({ theme }) => ({
     display: "flex",
+    flexDirection: "column",
     fontSize: '14px',
     fontWeight: '400',
     margin: '15px 0',
@@ -25,7 +26,7 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
         <Divider sx={{ marginTop: "15px" }}/>
         <div style={{margin:"0px"}}>
           <TypographyItem>
-            <em>Answer: &nbsp;</em>&nbsp; 
+            <em>Answer: &nbsp;</em>
             <ReactMarkdown>
               {answer}
             </ReactMarkdown>
@@ -39,7 +40,7 @@ export default function AnswerDisplay({cardwidth, question, answer, source, titl
           }
         </div>
         <Divider sx={{ marginBottom: "15px" }}/>
-        <Typography variant="subtitle2" sx={{marginTop: "3px"}}><i>Click below for more details related to the source​.</i></Typography>
+        <Typography variant="subtitle2" sx={{marginTop: "3px"}}><i>Click below for more details related to the context.</i></Typography>
         {/* <Stack direction="row" spacing={1} sx={{display: "flex", justifyContent: "space-between"}}>
           {
             title

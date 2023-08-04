@@ -20,7 +20,7 @@ export default function InputfieldABBY({ displayText }: any) {
             dispatch(openToast({open: true, message: "Your query is empty!", severity: "error"}))
         }
         
-        handleResetInput();
+        // handleResetInput();
         dispatch(setSearchQuery(userquery));
     }
 
@@ -28,13 +28,12 @@ export default function InputfieldABBY({ displayText }: any) {
         if(e.key === 'Enter') {
             
             handleSubmitSearch(e);
-        } else if (e.key === 'Backspace') {
-            dispatch(emptySearchQuery());
-        }
+        } 
     }
 
     const handleResetInput = () => {
         dispatch(emptySearchQuery());
+        setUserquery('');
     }
 
      
@@ -67,9 +66,9 @@ export default function InputfieldABBY({ displayText }: any) {
                 onChange={(e) => {
                     setUserquery(e.currentTarget.value);	
                     
-                    if (e.currentTarget.value.length === 1) {
-                        handleResetInput();
-                    }
+                    // if (e.currentTarget.value.length === 1) {
+                    //     handleResetInput();
+                    // }
 
                     }}
                 onKeyDown={keypress}

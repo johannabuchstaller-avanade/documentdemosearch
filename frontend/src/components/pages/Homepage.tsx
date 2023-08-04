@@ -9,13 +9,14 @@ import SimpleChatMenu from './Chat/SimpleChatMenu';
 import { appConfig } from 'config';
 import InputfieldABBY from 'components/common/InputFieldABBY';
 import { Search_Background } from 'resources';
+import { Stack } from '@mui/material';
 
 
 const Container = styled('div')(({ theme }) => ({
   margin: theme.spacing(8),
   width: "100%",
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "flex-start",
   alignItems: "center",
   flexDirection: "column",
   flexGrow: 1,
@@ -45,7 +46,7 @@ const Span = styled('span')(({ theme }) => ({
 }));
 
 const SpanBrand = styled('span')(({ theme }) => ({
-  background : "linear-gradient(to right, #ff9500, #944e03)",
+  background : "linear-gradient(to right, #8f33ff, #675978)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent",
   fontSize: "24px",
@@ -79,10 +80,12 @@ const Homepage = () => {
         <Section>
           <Container>
             <Typography variant='h2' sx ={{ color: "#0A1929", marginBottom: "5px", fontWeight: 600, maxWidth: "80%", fonFamily: "PlusJakartaSans-ExtraBold,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol" }}>
-            <Span>{`Welcome to ${appConfig.appName} Portal,`}</Span> <br/> &nbsp;&nbsp;&nbsp;&nbsp; <SpanBrand>{appConfig.welcomeOneLiner}</SpanBrand> 
-
+              <Stack direction="column" spacing={0} sx={{display: "flex", justifyContent: "flex-start", alignItems: "center",marginBottom: "5px"}}>
+                 <Span>{`Welcome to ${appConfig.appName} Portal,`}</Span> 
+                 <SpanBrand>{appConfig.welcomeOneLiner}</SpanBrand> 
+              </Stack>
             </Typography>
-            <Typography variant='body2'  sx ={{ color: "#0A1929", marginTop: "20px", marginBottom: "20px", maxWidth: "70%", fontFamily: "Space Mono, monospace"}}>
+            <Typography variant='body2'  sx ={{ color: "#0A1929", marginTop: "25px", marginBottom: "20px", maxWidth: "70%", fontFamily: "Space Mono, monospace"}}>
                 {appConfig.welcomeMessage}
             </Typography>
           </Container>

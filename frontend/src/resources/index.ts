@@ -8,7 +8,7 @@ import _ABC_logo from "./ABC_logo.png";
 import _ABBY from "./abby.png";
 import _MainLogo from "./jti_logo.png";
 
-import _Search_Background from "./Search_Background.png";
+import _Search_Background from "./Search_Background.jpg";
 
 
 export const brand_logo = _brand_logo;

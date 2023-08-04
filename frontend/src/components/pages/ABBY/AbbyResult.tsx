@@ -28,9 +28,9 @@ export default function AbbyResult(props: any) {
         {
             (props.lang === "en-us") 
             ?
-            <AccordionResult value={index} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html}/>
+            <AccordionResult value={index} cardtext={result.document.content} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html} title={result.document.title} />
             :
-            <AccordionResult value={index} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html}/>
+            <AccordionResult value={index} cardtext={result.document.translated_text} score={result.rerankerScore} kind={result.document.dataType} keyphrases={keyphrases} source={result.document.document_link} page={result.document.page_number} html={result.document.content_html} title={result.document.title} />
         }
         </div>
     });

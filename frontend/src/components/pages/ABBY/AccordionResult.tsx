@@ -36,7 +36,7 @@ const StyledDiv = styled('div')`
   }
 `;
 
-export default function AccordionResult({value, cardtext, kind, source, page, html}: any) {
+export default function AccordionResult({value, cardtext, kind, source, page, html, title}: any) {
   const tableRef = React.useRef(null);
 
   function renderContent(kind: string) {
@@ -82,12 +82,18 @@ export default function AccordionResult({value, cardtext, kind, source, page, ht
           { renderContent(kind) }
         </ListItemAvatar>   
           <Stack sx={{m: 2, flex: 1}}>
-                <Stack direction="row" sx={{m: 0, p: 0}}>
-                  <Typography variant="body2" component="div" sx={{ mr: 3, fontWeight: 400 }}> {value + 1}. </Typography>
-                  
-                  <Link href={source} sx={{ color: "blue"}} variant="body2" component="div">
-                    {source}
-                  </Link>
+                <Stack direction="row" sx={{m: 0, p: 0, flexWrap: 'wrap',  fontSize: "12px"}}>
+                  {/* <Typography variant="body2" component="div" sx={{ mr: 3, fontWeight: 400 }}> {value + 1}. </Typography> */}
+                  Context &nbsp; {value + 1}: &nbsp;
+                  <a href={source} target="_blank" rel="noopener noreferrer">
+                      <Typography 
+                          component="div" 
+                          sx={{ color: "blue", cursor: 'pointer', fontSize: "11px" }} 
+                          onClick={(event: any) => event.stopPropagation()}
+                      >
+                           {title}
+                      </Typography>
+                  </a>
                 </Stack>
                 <Typography variant="caption" color="green" component="div"> Page : {page} </Typography>
           </Stack>
