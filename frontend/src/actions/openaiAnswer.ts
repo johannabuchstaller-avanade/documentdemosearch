@@ -205,7 +205,8 @@ export async function handleFetchGPT4(context: string, searchText: string): Prom
         body: JSON.stringify(inputdata),
       });
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
+      console.log("Open AI succeeded!")
       const answer = data.choices[0].message.content
       finalanswer = answer
     } else{

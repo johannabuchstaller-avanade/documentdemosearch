@@ -41,6 +41,7 @@ const CustomizedChat = () => {
     hideUploadButton: true,
     botAvatarInitials: 'JTI',
     userAvatarInitials: 'SB',
+    avatarBorderRadius: '0%',	
     accent: '#007fff',
     botAvatarImage: JTI_BOT,
     userAvatarImage: '',
@@ -84,7 +85,15 @@ const initialize = async() => {
             error => console.log(`Error posting activity ${error}`)
           );
 
+
           const store = createStore({}, ({ dispatch }: any) => (next: any) => (action: any) => {
+            if (action.type === 'DIRECT_LINE/INCOMING_ACTIVITY') {
+              const { activity } = action.payload;
+      
+              if (activity.type === 'message' && activity.from.role === 'bot') {
+                  activity.text = activity.text.replace('Abby', 'JTI bot');
+              }
+          }
             if (action.type === 'DIRECT_LINE/CONNECT_FULFILLED') {
               dispatch({
                 type: 'WEB_CHAT/SEND_EVENT',
@@ -142,9 +151,11 @@ const handleRefresh = async() => {
 
 };
 
+
 // useEffect call
 useEffect(() => {
   initialize();
+
 }, []);
 
   return (

@@ -48,7 +48,7 @@ export default function SimpleChatPage() {
           alt="ABBY"
           width="45px"
           height="45px"
-          //style={{ borderRadius: "25px" }}
+          style={{padding: "5px", marginTop: "5px" }}
         />
       </Fab>
     </Zoom>
