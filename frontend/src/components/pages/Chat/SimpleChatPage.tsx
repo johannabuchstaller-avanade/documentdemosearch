@@ -4,7 +4,7 @@ import Zoom from "@mui/material/Zoom"
 import Fab from "@mui/material/Fab"
 import { openChat, selectChatOpen } from "store/ui/slice"
 import { useAppDispatch, useAppSelector } from "store/hooks"
-import { ABBY } from "resources"
+import { ABBY, JTI_BOT } from "resources"
 
 export default function SimpleChatPage() {
   const theme = useTheme()
@@ -44,11 +44,11 @@ export default function SimpleChatPage() {
         onClick={handleChatIconClick}
       >
         <img
-          src={ABBY}
+          src={JTI_BOT}
           alt="ABBY"
-          width="55px"
-          height="55px"
-          style={{ borderRadius: "25px" }}
+          width="45px"
+          height="45px"
+          //style={{ borderRadius: "25px" }}
         />
       </Fab>
     </Zoom>

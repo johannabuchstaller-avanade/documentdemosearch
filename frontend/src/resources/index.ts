@@ -6,7 +6,8 @@ import _DL_Acc_Logo from "./DL_Acc_Logo.svg";
 
 import _ABC_logo from "./ABC_logo.png";
 import _ABBY from "./abby.png";
-import _MainLogo from "./jti_logo.png";
+import _MainLogo from "./jti_logo1.png";
+import _JTI_BOT from "./jti_logo.png";
 
 import _Search_Background from "./Search_Background.jpg";
 
@@ -19,3 +20,4 @@ export const ABC_logo = _ABC_logo;
 export const ABBY = _ABBY;
 export const MainLogo = _MainLogo;
 export const Search_Background = _Search_Background;
+export const JTI_BOT = _JTI_BOT;

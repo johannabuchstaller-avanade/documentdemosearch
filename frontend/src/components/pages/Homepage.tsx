@@ -83,11 +83,12 @@ const Homepage = () => {
               <Stack direction="column" spacing={0} sx={{display: "flex", justifyContent: "flex-start", alignItems: "center",marginBottom: "5px"}}>
                  <Span>{`Welcome to ${appConfig.appName} Portal,`}</Span> 
                  <SpanBrand>{appConfig.welcomeOneLiner}</SpanBrand> 
+                 <Typography variant='body2'  sx ={{ color: "#0A1929", margin: "30px", padding: "5px", maxWidth: "80%", fontFamily: "Space Mono, monospace"}}>
+                    {appConfig.welcomeMessage}
+                </Typography>
               </Stack>
             </Typography>
-            <Typography variant='body2'  sx ={{ color: "#0A1929", marginTop: "25px", marginBottom: "20px", maxWidth: "70%", fontFamily: "Space Mono, monospace"}}>
-                {appConfig.welcomeMessage}
-            </Typography>
+            
           </Container>
         </Section>
         )

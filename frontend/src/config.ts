@@ -7,13 +7,13 @@ export const appConfig = {
         "semanticConfigName": "documentsearch-bahamas-semantic-config",
         "language": "en-us",
     },
-    "showChatbot": false,
+    "showChatbot": true,
     "showSummary": false,
     "searchBarInHeader": false,
     "uploadEnabled": false,
     "displayWelcomeMessage": true,
     "welcomeOneLiner": " your intelligent virtual assistant portal, powered by GenAI!",
-    "welcomeMessage": "Experience the future of knowledge discovery and effortless document management with MyBrand, harnessing the power of Azure Cognitive Search, Azure OpenAI, Abby powered by Power Virtual Agents, and Power Automate for seamless, intelligent information retrieval.",
+    "welcomeMessage": "Experience the future of knowledge discovery and effortless document management with Market Data Extraction, harnessing the power of Azure Cognitive Search, Azure OpenAI, for seamless, intelligent information retrieval.",
     "tips": [
         {
           "title": "Be as specific as possible and use keywords",

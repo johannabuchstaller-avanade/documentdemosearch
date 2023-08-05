@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MinimizeIcon from '@mui/icons-material/Minimize';
 import { closeChat } from "store/ui/slice";
 import { useAppDispatch } from "store/hooks";
-import { ABBY } from "resources";
+import { ABBY, JTI_BOT } from "resources";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box'
 
@@ -17,7 +17,7 @@ const headermargin = '10px';
 
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  backgroundColor: '#ee650b',
+  backgroundColor: '#370375',
   height: headerwidth
 }));
 
@@ -30,19 +30,19 @@ const CustomizedChat = () => {
   const handleChatBodyClose = () => {
     dispatch(closeChat());
   };
-  const tokenEndpoint = process.env.REACT_APP_TOKEN_ENDPOINT ?? "";
-  const chatEndpoint = process.env.REACT_APP_CHAT_ENDPOINT ?? "";
-  
+  const tokenEndpoint = "https://default0a33ec0d284248b3bf55af2499c326.3a.environment.api.powerplatform.com/powervirtualagents/botsbyschema/cr49b_webby/directline/token?api-version=2022-03-01-preview";
+  const chatEndpoint =  "https://prod-55.westus.logic.azure.com:443/workflows/adc23d201468491083abc81bb1118647/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=U5CWHGhJaR0J0ruUlnYgCyQZFCM_4_T4CjGAClIk9Ms";
+
   const environmentEndPoint = tokenEndpoint.slice(0,tokenEndpoint.indexOf('/powervirtualagents'));
   const apiVersion = tokenEndpoint.slice(tokenEndpoint.indexOf('api-version')).split('=')[1];
   const regionalChannelSettingsURL = `${environmentEndPoint}/powervirtualagents/regionalchannelsettings?api-version=${apiVersion}`;
 
   const styleOptions = {
     hideUploadButton: true,
-    botAvatarInitials: '',
+    botAvatarInitials: 'JTI',
     userAvatarInitials: 'SB',
     accent: '#007fff',
-    botAvatarImage: ABBY,
+    botAvatarImage: JTI_BOT,
     userAvatarImage: '',
     botAvatarBackgroundColor: 'transparent',
     bubbleBackground: "#f5f2f2",
@@ -51,8 +51,8 @@ const CustomizedChat = () => {
     bubbleTextColor: "Black",
     bubbleFromUserBorderRadius: "10px",
     bubbleFromUserTextColor: "White",
-    bubbleFromUserBackground: "#ee650b",
-    bubbleFromUserBorderColor: "#ee650b"
+    bubbleFromUserBackground: "#370375",
+    bubbleFromUserBorderColor: "#370375"
 }; 
 
 // Initialization function
@@ -103,7 +103,7 @@ const initialize = async() => {
               styleOptions,
               store,
               overrideLocalizedStrings: {
-                  TEXT_INPUT_PLACEHOLDER: 'Chat with Abby ...'
+                  TEXT_INPUT_PLACEHOLDER: 'Chat with JTI bot ...'
                 }
             },
             webchatRef.current
@@ -168,7 +168,7 @@ useEffect(() => {
                             component="div"
                             sx={{  color: 'white' }}
                         >
-                            Abby
+                            JTI bot
                         </Typography>
             </Box>
           <IconButton

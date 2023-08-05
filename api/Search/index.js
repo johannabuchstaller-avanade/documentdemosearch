@@ -47,6 +47,7 @@ module.exports = async function (context, req) {
             semsconfig: req.query.semsconfig || (req.body && req.body.semsconfig),
             filter: req.query.filter || (req.body && req.body.filter)
         };
+        let answer = '';
 
 
         const client = new SearchClient(
@@ -66,7 +67,14 @@ module.exports = async function (context, req) {
             output.push(result);
         }
 
-        const answer = searchResults.answers[0]?.highlights || '';
+        if (params.type === "semantic") {
+            answer = searchResults.answers[0]?.highlights || '';
+        } else {
+            answer = '';
+        }
+
+
+        // const answer = searchResults.answers[0]?.highlights || '';
 
         context.log(searchResults.count);
 
