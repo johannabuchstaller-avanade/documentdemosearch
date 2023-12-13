@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "store";
 import { IToast, IUIState } from "./types";
+import { appConfig } from "config";
 
 const initialState: IUIState = {
   themeNumber: 0,
@@ -16,7 +17,8 @@ const initialState: IUIState = {
   appQuery: "",
   context: [],
   metadata: [],
-  loading: true
+  loading: true,
+  searchType: appConfig.searchVariables.searchType
 };
 
 const uiSlice = createSlice({
@@ -84,6 +86,9 @@ const uiSlice = createSlice({
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
+    },
+    setSearchType(state, action: PayloadAction<string>) {
+      state.searchType = action.payload;
     }
   },
 });
@@ -108,7 +113,8 @@ export const {
   setContextData,
   setMetadata,
   clearSearchData,
-  setLoading
+  setLoading,
+  setSearchType
 } = uiSlice.actions;
 
 export const selectToastState = (state: RootState): IToast => state.ui.toast;
@@ -124,6 +130,7 @@ export const selectAppQuery = (state: RootState): string => state.ui.appQuery;
 export const selectContext = (state: RootState): Array<string> => state.ui.context;
 export const selectMetadata = (state: RootState): Array<Object> => state.ui.metadata;
 export const selectLoading = (state: RootState): boolean => state.ui.loading;
+export const selectSearchType = (state: RootState): string => state.ui.searchType;
 
 
 export const uiReducer = uiSlice.reducer;

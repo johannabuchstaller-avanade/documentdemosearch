@@ -94,7 +94,7 @@ const ShowData: React.FC = () => {
 
     filesBase64.forEach(async (file) => {
       try {
-        const response = await axios.post("https://abbysearchnode.azurewebsites.net/api/upload", { files: [file] }, {
+        const response = await axios.post("https://documentsearchdemocaseapi.azurewebsites.net/api/upload", { files: [file] }, {
           onUploadProgress: progressEvent => {
             if (progressEvent.total) {
               const uploadPercentage = Math.floor((progressEvent.loaded / (progressEvent.total) * 100));

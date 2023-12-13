@@ -1,93 +1,166 @@
-import * as React from 'react';
-import axios from 'axios';
-import AbbyResult from './AbbyResult';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import { Avatar } from '@mui/material';
-import { cogsearch } from 'resources';
-import Tooltip from 'components/common/Tooltip';
-import { useAppDispatch, useAppSelector } from 'store/hooks';
-import { appConfig } from 'config';
-import { setLoading, selectLoading } from 'store/ui/slice';
+import * as React from "react"
+import axios from "axios"
+import AbbyResult from "./AbbyResult"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
+import { Avatar } from "@mui/material"
+import { cogsearch } from "resources"
+import Tooltip from "components/common/Tooltip"
+import { useAppDispatch, useAppSelector } from "store/hooks"
+import { appConfig } from "config"
+import { setLoading, selectLoading, selectSearchType } from "store/ui/slice"
+import AccordionResult from "./AccordionResult"
+
 
 export default function AbbySearch(props: any) {
-    const [searchRes, setSearchRes] = React.useState<any[]>([]);
-    const [ searchAnswer, setSearchAnswer ] = React.useState("");
-    const dispatch = useAppDispatch();
-    const loading = useAppSelector(selectLoading);
+  const [searchRes, setSearchRes] = React.useState<any[]>([])
+  
+  // const [searchAnswer, setSearchAnswer] = React.useState("")
+  const dispatch = useAppDispatch()
+  const loading = useAppSelector(selectLoading)
+  const searchType = useAppSelector(selectSearchType)
+
+  const index = appConfig.searchVariables.indexName
+  const lang = appConfig.searchVariables.language
+  const semsconf = appConfig.searchVariables.semanticConfigName
+
+
+  
+
+  React.useEffect(() => {
+    dispatch(setLoading(true))
+    const getDocumentLinks = async (fileNames: any) => {
+      //https://wedocumentsearchdemocaseapi.azurewebsites.net/api/document
+        const response = await axios.post('https://documentsearchdemocaseapi.azurewebsites.net/api/document', { fileNames: fileNames, containerName: appConfig.searchVariables.documentContainerName});
+        // console.log("Document links: ", response.data);
+        return response.data;
+    };
+
+    const searchAzure = async () => {
+      if (props.searchText) {
+        const body = {
+          q: props.searchText,
+          top: 3,
+          skip: 0,
+          type: searchType,
+          lang: lang,
+          indexname: index,
+          semsconfig: semsconf,
+        }
+        	
+        axios.post("https://documentsearchdemocaseapi.azurewebsites.net/api/search?", body)
+          .then((response) => {
+            console.log("Search succeeded!")
+            // setSearchRes(response.data.results)
+            // setSearchAnswer(response.data.answer)
+            // console.log("Search results: ", response.data)
     
-    const [ langData, setLangData ] = React.useState("");
+            if (response.data.results.length > 0) {
+              // console.log("Search results: ", response.data.results)
+              
+              const fileNames = response.data.results.map(
+                (item: any) => item.document.document_filename
+              )
 
-    const index = appConfig.searchVariables.indexName;
-    const lang = appConfig.searchVariables.language;
-    const semsconf = appConfig.searchVariables.semanticConfigName;
-
+              // console.log("File names: ", fileNames)
     
-    React.useEffect(() => {
-        dispatch(setLoading(true));
-        const searchAzure = async () => {
-            if(props.searchText) {
-                setLangData(lang);
+              getDocumentLinks(fileNames)
+                .then(documentLinks => {
+                  let titlesAndSources;
+    
+                  if (documentLinks && documentLinks.length > 0) {
+                      titlesAndSources = response.data.results.map((item: any) => {
+                          const documentName = item.document.document_filename;
+                          const documentUrlObj = documentLinks.find((urlObj: any) => urlObj[documentName]);
+                          const documentUrl = documentUrlObj ? documentUrlObj[documentName] : null;
+    
+                          return {
+                              title: item.document.title,
+                              source: item.document.document_filename,
+                              page: item.document.page_number,
+                              content: item.document.content,
+                              html: item.document.content_html,
+                              score: item.score,
+                              dataType: item.document.dataType,
+                              documentSourceLink: item.document.document_link,
+                              documentUrl,
+                          };
+                      });
+                  } else {
+                      titlesAndSources = response.data.results.map((item: any) => ({
+                          title: item.document.title,
+                          source: item.document.document_filename,
+                          page: item.document.page_number,
+                          content: item.document.content,
+                          score: item.score,
+                          dataType: item.document.dataType,
+                          documentSourceLink: item.document.document_link,
+                          html: item.document.content_html
+                      }));
+                  }
+                  setSearchRes(titlesAndSources)
+    
+                  let text = titlesAndSources
+                    .filter((doc: any) => doc.score > 0.5)
+                    .map(
+                      (doc: any, index: number) =>
+                        `Context ${index + 1}:\n\n ${
+                          doc.content
+                        }\n\n document Name: ${
+                          doc.source
+                        }\n\n page number: ${String(doc.page)
+                        }\n\n document link: ${doc.documentUrl}`
+                    )
+                    .join("\n\n")
 
-                const body = {
-                    q: props.searchText,
-                    top: 3,
-                    skip: 0,
-                    type: "full",
-                    lang: lang,
-                    indexname: index,
-                    semsconfig: semsconf
-                };
-                // /api/search is a proxy to the Azure Search API, https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?
-                axios.post('https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?', body)
-                    .then(response => {
-                        //console.log(response.data);
-                        console.log("Search succeeded!")
-                        setSearchRes(response.data.results);
-                        setSearchAnswer(response.data.answer)
-                        let text;
-                        if(response.data.results.length > 0) {
-                            //text = response.data.results.filter((doc: any) => doc.rerankerScore > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
-                            text = response.data.results.filter((doc: any) => doc.score > 0.7).map((doc: any, index: number) => "Context " + (index+1) + ":\n\n "+doc.document.content + "\n\n document link: " + doc.document.document_link + "\n\n page number: " + String(doc.document.page_number)).join("\n\n");
-                            //console.log("*********text********: ", text);
-                            props.handleLanguage(lang);
-                            props.handleSearchResult(text);
-                            const titlesAndSources = response.data.results.map((item: any)  => ({
-                                title: item.document.title,
-                                source: item.document.document_link,
-                                page: item.document.page_number,
-                                html: item.document.content_html
-                            }));
-                            //console.log("titlesAndSources: ", titlesAndSources);
-                            props.handleTitleSources(titlesAndSources);
-                        } else {
-                            text = "No results found";
-                            props.handleSearchResult(text);
-                            props.handleTitleSources([]);
-                        }
-
-                        // setIsLoading(false);
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });       
+                 
+    
+                  props.handleTitleSources(titlesAndSources);
+                  props.handleLanguage(lang)
+                  props.handleSearchResult(text)
+                  // console.log("Search results: ", titlesAndSources)
+                })
+                .catch(error => {
+                  console.error("Error fetching document links: ", error);
+                  // Handle error state or notify user here
+                });
+            } else {
+              let text = "No results found"
+              props.handleSearchResult(text)
+              props.handleTitleSources([])
             }
-        };
-        searchAzure();
-        
-    }, [props.searchText, dispatch, setLoading]);
+          })
+          .catch((error) => {
+            console.error("Error in search: ", error)
+            // Handle error state or notify user here
+          })
+      }
+    }
+    
+    searchAzure()
+  }, [props.searchText, setLoading])
 
-    return (
-        <>
-        { !loading && (
-            <Stack spacing={2} sx={{ display: "flex", alignItems: "center" }}>
-                <Stack spacing={2} direction="row" sx={{ display: "flex", alignItems: "center", margin: "10px" }}>
-                    <Tooltip title="Azure Cognitive Search" placement="top">
-                        <Avatar alt="search" src={cogsearch} sx={{padding: "4px", "& img": {objectFit: "contain"}}} />
-                    </Tooltip>
-                    <Typography variant="h6" sx={{ m: 4 }}>Search results</Typography>
-                </Stack>
-                {
+  return (
+    <>
+      {!loading && (
+        <Stack spacing={2} sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+          <Stack
+            spacing={2}
+            direction="row"
+            sx={{ display: "flex", alignItems: "center", margin: "10px" }}
+          >
+            <Tooltip title="Azure Cognitive Search" placement="top">
+              <Avatar
+                alt="search"
+                src={cogsearch}
+                sx={{ padding: "4px", "& img": { objectFit: "contain" } }}
+              />
+            </Tooltip>
+            <Typography variant="h6" sx={{ m: 4 }}>
+              Search results ({ searchType})
+            </Typography>
+          </Stack>
+          {/* {
                     searchAnswer && (
                         <Typography 
                         variant="body2" 
@@ -95,12 +168,45 @@ export default function AbbySearch(props: any) {
                         dangerouslySetInnerHTML={{ __html: searchAnswer }}
                       />
                     )
-                }
-                <AbbyResult documents={searchRes} query={props.searchText} lang={langData} />
-            </Stack>
-        )}
-        </>
-    )
+                } */}
+          {/* <AbbyResult documents={searchRes} query={props.searchText} /> */}
+          <Stack spacing={2} sx={{ display: "flex", alignItems: "center", width: "100%" }}>
+            {searchRes.length > 0 ? (
+              <>
+                {searchRes.map((result: any, index: number) => {
+                  return (
+                    <div key={index} style={{ width: "100%", margin: "3px" }}>
+                      <AccordionResult
+                        value={index}
+                        kind={result.dataType}
+                        source={result.source}
+                        page={result.page}
+                        html={result.html}
+                        title={result.title}
+                        pdfUrl={result.documentUrl}
+                        documentSourceLink={result.documentSourceLink}
+                      />
+                    </div>
+                  )
+                })}
+              </>
+            ) : (
+              <div style={{ width: "100%", margin: "3px" }}>
+                <AccordionResult
+                  value={0}
+                  kind={"paragraph"}
+                  source={""}
+                  page={""}
+                  html={"No results found"}
+                  title={""}
+                  pdfUrl={""}
+                  documentSourceLink={""}
+                />
+              </div>
+            )}
+          </Stack>
+        </Stack>
+      )}
+    </>
+  )
 }
-
-

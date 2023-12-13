@@ -20,7 +20,8 @@ export default function AbbyAnswer(props: any) {
            
                 handleFetchGPT4(props.context, props.searchText)
                 .then((result) => {
-                    console.log("result: ", result);
+                    //console.log("result: ", result);
+                    
                     setAnswertext(result)
                     dispatch(setLoading(false));
                     
@@ -33,7 +34,7 @@ export default function AbbyAnswer(props: any) {
         }
         generateAnswer();
         
-        }, [props.searchText, props.context, dispatch, setLoading]);
+        }, [props.searchText, props.context, setLoading]);
    
 
     return (

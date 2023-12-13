@@ -7,12 +7,13 @@ import { FcRefresh } from "react-icons/fc";
 import { useAppDispatch } from "store/hooks";
 import { openToast } from 'store/ui/slice';
 import Tooltip from './Tooltip';
-import { setSearchQuery, emptySearchQuery} from 'store/ui/slice';
+import { setSearchQuery, emptySearchQuery } from 'store/ui/slice';
 
 export default function InputfieldABBY({ displayText }: any) {
     const dispatch = useAppDispatch();
     const [userquery, setUserquery] = React.useState('');
     const displayTextValue = displayText ? displayText : 'Search Ava ...';
+
 
     const handleSubmitSearch = (e: any) => {
         e.preventDefault();
@@ -51,7 +52,7 @@ export default function InputfieldABBY({ displayText }: any) {
         <Paper
             component="form"
             elevation={2}
-            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '60%', borderRadius: "25px", zIndex: 1, backgroundColor: "grey" }}
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: '100%', borderRadius: "25px", zIndex: 1, backgroundColor: "grey" }}
             >
             <Tooltip title="Reset" placement="top"> 
                 <IconButton sx={{ p: '10px' }} aria-label="menu" onClick={handleResetInput}>

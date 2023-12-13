@@ -32,6 +32,7 @@ const AbbyMain = () => {
   const [titlesources, setTitlesources] = React.useState<object[]>([]);
   
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  
 
   const handleSearchResult = React.useCallback((result: object[]) => {
     setContext(result);
@@ -44,7 +45,6 @@ const AbbyMain = () => {
   const handleLanguage = React.useCallback((result: string) => {
     setLanguage(result);
   }, []);
-
 
   return(
     <Section>

@@ -20,4 +20,5 @@ export interface IUIState {
   context: Array<string>;
   metadata: Array<Object>;
   loading: boolean;
+  searchType: string;
 }
