@@ -31,7 +31,8 @@ export default function AbbySearch(props: any) {
     dispatch(setLoading(true))
     const getDocumentLinks = async (fileNames: any) => {
       //https://wedocumentsearchdemocaseapi.azurewebsites.net/api/document
-        const response = await axios.post('https://documentsearchdemocaseapi.azurewebsites.net/api/document', { fileNames: fileNames, containerName: appConfig.searchVariables.documentContainerName});
+      // https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net
+        const response = await axios.post('https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net/api/document', { fileNames: fileNames, containerName: appConfig.searchVariables.documentContainerName});
         // console.log("Document links: ", response.data);
         return response.data;
     };
@@ -48,12 +49,12 @@ export default function AbbySearch(props: any) {
           semsconfig: semsconf,
         }
         	
-        axios.post("https://documentsearchdemocaseapi.azurewebsites.net/api/search?", body)
+        axios.post("/api/search?", body)
           .then((response) => {
             console.log("Search succeeded!")
             // setSearchRes(response.data.results)
             // setSearchAnswer(response.data.answer)
-            // console.log("Search results: ", response.data)
+            console.log("Search results: ", response.data)
     
             if (response.data.results.length > 0) {
               // console.log("Search results: ", response.data.results)

@@ -7,7 +7,6 @@ import { handleFetchGPT4 } from 'actions/openaiAnswer';
 import { useAppDispatch, useAppSelector } from 'store/hooks'
 import { setLoading, selectLoading } from 'store/ui/slice';
 
-
 export default function AbbyAnswer(props: any) {
     const [ answertext, setAnswertext ] = React.useState('');  
     const dispatch = useAppDispatch();
@@ -15,15 +14,15 @@ export default function AbbyAnswer(props: any) {
 
     React.useEffect(() => {
         dispatch(setLoading(true));
+        
         const generateAnswer = async() => {
             if(props.searchText) {
            
                 handleFetchGPT4(props.context, props.searchText)
                 .then((result) => {
-                    //console.log("result: ", result);
-                    
-                    setAnswertext(result)
-                    dispatch(setLoading(false));
+                                     
+                        setAnswertext(result)
+                        dispatch(setLoading(false));
                     
                 })
                 .catch(error => {

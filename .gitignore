@@ -5,4 +5,17 @@
 
 /infrastructure
 /frontend/build1.zip
+/frontend/Dockerfile.frontend
 /Builds
+
+/backend
+/backend/.*
+/backend/__pycache__
+/backend/__pycache__/.*
+/backend/build
+
+/nginx
+/nginx/.*
+
+/docker-compose.yml
+/Dockerfile

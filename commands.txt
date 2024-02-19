@@ -1,2 +1,2 @@
 func azure functionapp publish wedocumentsearchdemocaseapi
-az webapp deployment source config-zip --resource-group we-documentsearchdemo-rg --name documentsearchUI --src build.zip
+az webapp deployment source config-zip --resource-group rgrp-msfnex54-05-ai-data-parcing-prd --name webapp-msfnex54-05-ai-data-parcing-prd --src build.zip

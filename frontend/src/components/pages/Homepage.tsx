@@ -4,8 +4,8 @@ import Typography from "@mui/material/Typography"
 import { selectAppQuery, emptySearchQuery } from "store/ui/slice"
 import { useAppSelector, useAppDispatch } from "store/hooks"
 import AbbyMain from "./ABBY/AbbyMain"
-import SimpleChatPage from "./Chat/SimpleChatPage"
-import SimpleChatMenu from "./Chat/SimpleChatMenu"
+// import SimpleChatPage from "./Chat/SimpleChatPage"
+// import SimpleChatMenu from "./Chat/SimpleChatMenu"
 import { appConfig } from "config"
 import InputfieldABBY from "components/common/InputFieldABBY"
 import { Search_Background } from "resources"
@@ -24,6 +24,7 @@ import {
   FormControlLabel, Radio, RadioGroup, IconButton
 } from "@mui/material"
 import { selectSearchType, setSearchType } from "store/ui/slice"
+// import ChatComponent from "./ChatComponent"
 
 
 const Container = styled("div")(({ theme }) => ({
@@ -186,14 +187,17 @@ const Homepage = () => {
           )}
         </>
       )}
-      {/* {
+      {
+      /* {
       appConfig.showChatbot && (
         <>
         <SimpleChatPage />
         <SimpleChatMenu />
         </>
       )
-    } */}
+    } */
+    }
+    {/* <ChatComponent /> */}
     </>
   )
 }

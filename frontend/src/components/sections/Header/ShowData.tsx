@@ -94,7 +94,9 @@ const ShowData: React.FC = () => {
 
     filesBase64.forEach(async (file) => {
       try {
-        const response = await axios.post("https://documentsearchdemocaseapi.azurewebsites.net/api/upload", { files: [file] }, {
+        // https://wedocumentsearchdemocaseapi.azurewebsites.net/api/upload
+        // https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net/api/upload
+        const response = await axios.post("https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net/api/upload", { files: [file] }, {
           onUploadProgress: progressEvent => {
             if (progressEvent.total) {
               const uploadPercentage = Math.floor((progressEvent.loaded / (progressEvent.total) * 100));
