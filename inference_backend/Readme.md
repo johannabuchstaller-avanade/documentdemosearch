@@ -1,6 +1,6 @@
 ## Create an environment
 ```bash
-python -m .backenv env
+python -m venv .backenv
 ```
 
 ## Activate the environment
