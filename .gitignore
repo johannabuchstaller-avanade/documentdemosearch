@@ -14,6 +14,14 @@
 /backend/__pycache__/.*
 /backend/build
 
+# /inference_backend
+# /inference_backend/.*
+/inference_backend/__pycache__
+/inference_backend/*/__pycache__
+/inference_backend/__pycache__/.*
+/inference_backend/*/__pycache__/.*
+/inference_backend/build
+
 /nginx
 /nginx/.*
 
