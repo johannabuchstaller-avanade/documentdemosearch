@@ -5,13 +5,15 @@ import http
 import json
 from new_class_24 import ApiClient
 from helpers import transform_document_data_search
+from dotenv import load_dotenv
+load_dotenv()
 
 
-tenant_id =
-client_id =
-client_secret =
-base_url=
-
+tenant_id = os.getenv("tenant_id")
+client_id =os.getenv("client_id")
+client_secret =os.getenv("client_secret")
+base_url=os.getenv("base_url")
+print(tenant_id)
 def main(req: func.HttpRequest) -> func.HttpResponse:
     client=ApiClient(tenant_id, client_id, client_secret, base_url)
     try:
