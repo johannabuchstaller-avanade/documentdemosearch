@@ -1,9 +1,15 @@
 import logging
 import azure.functions as func
 import os
-
-context = os.environ["SAMPLE_ENVIRONMENT"]
-
+import http
+import sys
+# sys.path.append("api_client_fynn/new_class_24.py")
+# from new_class_24 import *
+#from new_class_24 import ApiClient
+from new_class_24 import *
+print(hak)
+#context = os.environ["SAMPLE_ENVIRONMENT"]
+context ="context"
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
@@ -28,3 +34,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
             "Please pass an input in the query string or in the request body.",
             status_code=400
         )
+
+def second_func(req):
+    return req +"hello"
