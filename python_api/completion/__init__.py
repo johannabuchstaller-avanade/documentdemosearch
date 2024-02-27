@@ -5,14 +5,10 @@ import http
 import json
 from new_class_24 import ApiClient
 
-from dotenv import load_dotenv
-load_dotenv()
-
-
-tenant_id = os.getenv("tenant_id")
-client_id =os.getenv("client_id")
-client_secret =os.getenv("client_secret")
-base_url=os.getenv("base_url")
+tenant_id = os.environ["tenant_id"]
+client_id =os.environ["client_id"]
+client_secret =os.environ["client_secret"]
+base_url=os.environ["base_url"]
 #client=ApiClient(tenant_id, client_id, client_secret, base_url)
 
 #context = os.environ["SAMPLE_ENVIRONMENT"]

@@ -4,33 +4,94 @@ import os
 import http
 import json
 from new_class_24 import ApiClient
-from dotenv import load_dotenv
-load_dotenv()
 
-
-tenant_id = os.getenv("tenant_id")
-client_id =os.getenv("client_id")
-client_secret =os.getenv("client_secret")
-base_url=os.getenv("base_url")
-
+tenant_id = os.environ["tenant_id"]
+client_id =os.environ["client_id"]
+client_secret =os.environ["client_secret"]
+base_url=os.environ["base_url"]
 
 # def main(req: func.HttpRequest) -> func.HttpResponse:
 #     client=ApiClient(tenant_id, client_id, client_secret, base_url)
 #     try:
 #         req_body = req.get_json()
-#     except ValueError:
-#         return func.HttpResponse("Invalid request body. Please provide a valid JSON object.", status_code=400)
-#     document_id = req_body.get("DocumentId")
-#     response = client.download_document(document_id)
-#     response_json=json.dumps(response)
-#     return func.HttpResponse(response_json, status_code=200)
+#         document_id = req_body.get('DocumentId')
+        
+#         if not document_id:
+#             return func.HttpResponse(
+#                 "Please pass a DocumentId in the request body.",
+#                 status_code=400
+#             )
+#         download_path = client.download_document(document_id)
+#         download_path = json.loads(download_path)
+#         print(download_path)
+#         if download_path:
+#             return func.HttpResponse(body=download_path.body, status_code=200, headers=download_path.headers)
+#         else:
+#             return func.HttpResponse("Failed to download document.", status_code=500)
+#     except Exception as e:
+#         return func.HttpResponse(f"An error occurred: {str(e)}", status_code=500)
+
+
+# def main(req: func.HttpRequest) -> func.HttpResponse:
+#     client = ApiClient(tenant_id, client_id, client_secret, base_url)
+#     try:
+#         req_body = req.get_json()
+#         document_id = req_body.get('DocumentId')
+        
+#         if not document_id:
+#             return func.HttpResponse(
+#                 "Please pass a DocumentId in the request body.",
+#                 status_code=400
+#             )
+        
+#         # Download the document content
+#         document_content = client.download_document(document_id)
+        
+#         # Set the content type and attachment filename for the response
+#         headers = {
+#             'Content-Type': 'application/octet-stream',
+#             'Content-Disposition': f'attachment; filename=document_{document_id}.pdf'
+#         }
+        
+#         # Return the document content as an attachment
+#         return func.HttpResponse(body=document_content, status_code=200, headers=headers)
+#     except Exception as e:
+#         return func.HttpResponse(f"An error occurred: {str(e)}", status_code=500)
+
+
+
+##working giving back binary contents
+# def main(req: func.HttpRequest) -> func.HttpResponse:
+#     client = ApiClient(tenant_id, client_id, client_secret, base_url)
+#     try:
+#         req_body = req.get_json()
+#         document_id = req_body.get('DocumentId')
+        
+#         if not document_id:
+#             return func.HttpResponse(
+#                 "Please pass a DocumentId in the request body.",
+#                 status_code=400
+#             )
+#         download_content = client.download_document(document_id)
+        
+#         if download_content:
+#             filename = f"document{document_id}.pdf"
+#             content_disposition = f"attachment; filename={filename}"
+#             return func.HttpResponse(
+#                 body=download_content,
+#                 status_code=200,
+#                 headers={"Content-Disposition": content_disposition, "Content-Type": "application/pdf"}
+#             )
+#         else:
+#             return func.HttpResponse("Failed to download document.", status_code=500)
+#     except Exception as e:
+#         return func.HttpResponse(f"An error occurred: {str(e)}", status_code=500)
 
 
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    client=ApiClient(tenant_id, client_id, client_secret, base_url)
+    client = ApiClient(tenant_id, client_id, client_secret, base_url)
     try:
-        # Parse request body for document_id
         req_body = req.get_json()
         document_id = req_body.get('DocumentId')
         
@@ -39,15 +100,16 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
                 "Please pass a DocumentId in the request body.",
                 status_code=400
             )
+        download_content = client.download_document(document_id)
         
-        # Call the download_document function
-        download_path = client.download_document(document_id)
-        
-        # Check the response from download_document and return appropriate response
-        if download_path == "Document not found":
-            return func.HttpResponse("Document not found", status_code=404)
-        elif isinstance(download_path, str):  # Assuming successful download returns the path
-            return func.HttpResponse(f"Document downloaded successfully: {download_path}", status_code=200)
+        if download_content:
+            filename = f"document{document_id}.pdf"
+            content_disposition = f"attachment; filename={filename}"
+            return func.HttpResponse(
+                body=download_content,
+                status_code=200,
+                headers={"Content-Disposition": content_disposition, "Content-Type": "application/pdf"}
+            )
         else:
             return func.HttpResponse("Failed to download document.", status_code=500)
     except Exception as e:

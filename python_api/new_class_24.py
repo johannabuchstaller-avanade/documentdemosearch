@@ -5,7 +5,7 @@ import os
 import ssl
 import certifi
 import json
-
+from azure.functions import HttpResponse
 # from dotenv import load_dotenv
 # load_dotenv()
 
@@ -133,68 +133,60 @@ class ApiClient:
             return response.json()
         else:
             return None
-        
+
+
+
     # def download_document(self, document_id):
     #     """Download documents by document id. Hand over request body accordingly:
     #     {
     #     "DocumentId": 546
     #     }
     #     """
-    #     url=f"{self.base_url}/api/documents/{document_id}/download"
+    #     url = f"{self.base_url}/api/documents/{document_id}/download"
     #     headers = self.get_headers()
-    #     downloads_folder = os.path.join(os.path.expanduser("~"), "Downloads")
-    #     if not os.path.exists(downloads_folder):
-    #         os.makedirs(downloads_folder)
-    #     filename =f"document{document_id}.pdf"
-    #     full_file_path = os.path.join(downloads_folder, filename)
+    #     filename=f"document{document_id}.pdf"
+    #     #print(url)
+    #     # Specify the folder for download
+    #     # save_folder = os.path.join(os.path.dirname(__file__), "downloads")
+        
+    #     # if not os.path.exists(save_folder):
+    #     #     os.makedirs(save_folder)
+        
+    #     # filename = f"document{document_id}.pdf"
+    #     # full_file_path = os.path.join(save_folder, filename)
+        
     #     response = requests.get(url, headers=headers, stream=True)
+        
     #     if response.status_code == 200:
-    #         with open(full_file_path, "wb") as f:
-    #             for chunk in response.iter_content(chunk_size=8192):
-    #                 f.write(chunk)
-    #         return f"Document downloaded successfuly: {full_file_path}"
+    #         content_disposition = f"attachment; filename={filename}"
+
+       
+    #         return {"body": response.content, "headers": {"Content-Disposition": content_disposition, "Content-Type": "application/pdf"}}
+    #         # with open(full_file_path, "wb") as f:
+    #         #     for chunk in response.iter_content(chunk_size=8192):
+    #         #         f.write(chunk)
+            
+    #         # # Return the path where the document is saved within the repository
+    #         # return full_file_path
     #     elif response.status_code == 404:
     #         return "Document not found"
     #     else:
     #         return response.content
-        
 
 
 
     def download_document(self, document_id):
-        """Download documents by document id. Hand over request body accordingly:
-        {
-        "DocumentId": 546
-        }
-        """
+        """Download documents by document id."""
         url = f"{self.base_url}/api/documents/{document_id}/download"
         headers = self.get_headers()
-        
-        # Specify the folder within your repository where you want to save the document
-        save_folder = os.path.join(os.path.dirname(__file__), "downloads")
-        
-        if not os.path.exists(save_folder):
-            os.makedirs(save_folder)
-        
-        filename = f"document{document_id}.pdf"
-        full_file_path = os.path.join(save_folder, filename)
-        
         response = requests.get(url, headers=headers, stream=True)
         
         if response.status_code == 200:
-            with open(full_file_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    f.write(chunk)
-            
-            # Return the path where the document is saved within the repository
-            return full_file_path
+            return response.content  # Return only the document content
         elif response.status_code == 404:
             return "Document not found"
         else:
             return response.content
-
-
-
 
 
 if __name__ == "__main__":

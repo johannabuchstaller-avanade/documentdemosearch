@@ -6,7 +6,7 @@ python -m venv .venv
 ```bash
 touch .env
 ```
-## copy the secrets in your env, example:
+## copy the secrets in your .env file, example:
 
 tenant_id = "xxx"
 client_id = "xxx"
