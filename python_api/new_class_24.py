@@ -5,6 +5,15 @@ import os
 import ssl
 import certifi
 import json
+
+# from dotenv import load_dotenv
+# load_dotenv()
+
+
+# tenant_id = os.getenv("tenant_id")
+# client_id =os.getenv("client_id")
+# client_secret =os.getenv("client_secret")
+# base_url=os.getenv("base_url")
 hak="hak"
 
 class ApiClient:
