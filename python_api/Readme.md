@@ -2,6 +2,17 @@
 ```bash	
 python -m venv .venv
 ```
+## create a .env file
+```bash
+touch .env
+```
+## copy the secrets in your env, example:
+
+tenant_id = "xxx"
+client_id = "xxx"
+client_secret = "xxx"
+base_url='xxx'
+
 
 ## activate the venv
 ```bash	
