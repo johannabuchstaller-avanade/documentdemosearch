@@ -76,13 +76,22 @@ class ApiClient:
         """Check if the current token is valid."""
         return self.token_expiry and datetime.now() < self.token_expiry
 
+    # def get_headers(self):
+    #     """Ensure token is valid and return headers for API requests."""
+    #     if not self.is_token_valid():
+    #         self.fetch_token()
+    #     return {
+    #         'Authorization': f'Bearer {self.token}',
+    #         'Content-Type': 'application/json'
+    #     }
     def get_headers(self):
         """Ensure token is valid and return headers for API requests."""
         if not self.is_token_valid():
             self.fetch_token()
         return {
+            'accept': 'application/json',
             'Authorization': f'Bearer {self.token}',
-            'Content-Type': 'application/json'
+            
         }
     def get_chat_completion(self, request_body):
         """OpenAI call, hand over request body, to adjust model, context etc. in this format:
