@@ -29,5 +29,5 @@
 /Dockerfile
 
 venv
-#.venv
+.venv
 .env

@@ -76,13 +76,22 @@ class ApiClient:
         """Check if the current token is valid."""
         return self.token_expiry and datetime.now() < self.token_expiry
 
+    # def get_headers(self):
+    #     """Ensure token is valid and return headers for API requests."""
+    #     if not self.is_token_valid():
+    #         self.fetch_token()
+    #     return {
+    #         'Authorization': f'Bearer {self.token}',
+    #         'Content-Type': 'application/json'
+    #     }
     def get_headers(self):
         """Ensure token is valid and return headers for API requests."""
         if not self.is_token_valid():
             self.fetch_token()
         return {
+            'accept': 'application/json',
             'Authorization': f'Bearer {self.token}',
-            'Content-Type': 'application/json'
+            
         }
     def get_chat_completion(self, request_body):
         """OpenAI call, hand over request body, to adjust model, context etc. in this format:
@@ -187,6 +196,71 @@ class ApiClient:
             return "Document not found"
         else:
             return response.content
+
+
+    def create_document_with_chunks(self, libraryid, file_path, chunks, metadata=None):
+        # Define the API endpoint URL
+        url = f"{self.base_url}/api/libraries/{libraryid}/documents/chunks"
+        headers=self.get_headers()
+        print(headers)
+        # Prepare the request payload as multipart/form-data
+        payload = {
+            #"File": ("file", open(file_path, "rb")),
+            "Chunks": chunks,
+        }
+
+        if metadata is not None:
+            payload["Metadata"] = (None, json.dumps(metadata))
+        files = {
+            "File": (file_path, open(file_path, "rb")),
+        }
+        # Make the POST request
+        response = requests.post(url, headers=headers, data=payload, files=files)
+
+        # Check the response status code
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 403:
+            raise Exception("Forbidden: You don't have permission to access this resource.")
+        elif response.status_code == 404:
+            raise Exception("Not Found: The resource was not found.")
+        else:
+            #raise Exception(f"API request failed with status code {response.status_code}")
+            print(response.status_code)
+            print(response.text)
+
+
+    def retrieve_library_documents(self, library_id):
+        """
+        Retrieves all the library documents by library ID.
+
+        :param library_id: Library ID for which to retrieve documents.
+        :return: Response from the GET request.
+        """
+        url = f"{self.base_url}/api/libraries/{library_id}/documents"  # Replace with the actual URL for the GET operation
+        headers=self.get_headers()
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 404:
+            raise Exception("Not Found: The library or documents were not found.")
+        else:
+            # Handle other status codes or raise an exception
+            response.raise_for_status()
+
+
+
+
+    def delete_document(self, doc_id):
+        url=f"{self.base_url}/api/documents/{doc_id}"
+        headers=self.get_headers()
+        try:
+            response = requests.delete(url, headers=headers)
+            response.raise_for_status()
+            return response.status_code
+        except requests.exceptions.RequestException as e:
+            print(f"Request error: {e}")
+            return None
 
 
 if __name__ == "__main__":
