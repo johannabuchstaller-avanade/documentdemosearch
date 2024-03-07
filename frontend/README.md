@@ -78,4 +78,5 @@ This will deploy the React application to the Azure Web App, making it accessibl
 ## API 
 - Frontend api to connect to function app is present in frontend/src/actions/chatjticonnect.ts
 - change the path to the api endpoint like /api/search -> <functionappname>/api/search, /api/download -> <functionappname>/api/download, /api/completion -> <functionappname>/api/completion
+- In the Cors of the function app add the web app url to the allowed origins.
 
