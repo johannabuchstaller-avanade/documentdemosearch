@@ -80,3 +80,14 @@ This will deploy the React application to the Azure Web App, making it accessibl
 - change the path to the api endpoint like /api/search -> <functionappname>/api/search, /api/download -> <functionappname>/api/download, /api/completion -> <functionappname>/api/completion
 - In the Cors of the function app add the web app url to the allowed origins.
 
+## Steps to run the application
+
+### Function App changes
+- publish Fynn's code in the function app
+- In the Cors of the function app add the web app
+
+### Web App changes
+- change the chatjticonnect.ts by adding function url to <function url>/api/<path>
+- build the frontend using npm run build
+- zip the build
+- publish the build
