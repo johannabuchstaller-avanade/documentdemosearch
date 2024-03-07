@@ -67,7 +67,7 @@ zip -r build.zip build
 3. Deploy the zipped package to the Azure Web App associated with your Function App:
 
 ```
-az webapp deployment source config-zip --resource-group <resource group name> --name <web app name> --src build.zip
+az webapp deployment source config-zip --resource-group rgrp-msfnex54-05-ai-data-parcing-prd --name webapp-msfnex54-05-ai-data-parcing-prd --src build.zip
 ```
 
 
