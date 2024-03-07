@@ -13,7 +13,7 @@ export async function getResponseFromOpenAI(context: string, searchText: string)
           •\tDo not answer questions that are not related to the context and respond with \"I am not sure about that!\".
           •\tIf you do not know the answer to a question, respond by saying “I do not know the answer to your question.”
           •\tThere are multiple context, which has Context and metadata.
-          •\tThe metadatas are: document link and page number.
+          •\tThe metadatas are: document Name and page number.
           •\tAnswer can be based on any of the context. You could use multiple context to answer the question.
           •\tAnalyze all context and if there are comparable answers, give detailed answer.
           •\tIf there are multiple answers, give all answers.
@@ -28,19 +28,18 @@ export async function getResponseFromOpenAI(context: string, searchText: string)
           Context 0: 
               Flappy is a bird. It can fly. It can also swim. It is a bird. 
               
-              document link: https://flappy1.com
+              document Name: File_1.pdf
   
               page number: 5
   
           Context 1: 
               Flappy is a good bird. Flappy can run.
   
-              document link: https://flappy2.com
-  
+              document Name: File_2.pdf
               page number: 8
   
           Question: What can Flappy do?
-          Answer: According to [Context 1](https://flappy1.com) at page number 5, Flappy can fly and swim. In addition, according to [Context 2](https://flappy2.com) at page number 8, Flappy can run. Thus, it can be concluded that flappy can fly, swim and run.
+          Answer: According to **File_1.pdf** at page number 5, Flappy can fly and swim. In addition, according to **File_2.pdf** at page number 8, Flappy can run. Thus, it can be concluded that flappy can fly, swim and run.
   
   
         Context:

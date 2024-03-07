@@ -53,7 +53,7 @@ export default function AbbySearch(props: any) {
                         }\n\n document Name: ${
                           doc.source
                         }\n\n page number: ${String(doc.page)
-                        }\n\n document link: ${doc.documentSourceLink}`
+                        }`
                     )
                     .join("\n\n")
 
