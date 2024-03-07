@@ -21,6 +21,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Invalid request body. Please provide a valid JSON object.", status_code=400)
     top = req_body.get("top")
     searchkeyword = req_body.get("q")
+   
     #llmrerank = bool(req_body.get("LlmReRank"))
     #llmrerankcontext = req_body.get("LlmReRankContext")
     #libraryids = req_body.get("LibraryIds")
@@ -37,5 +38,5 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     response_json = json.dumps(transformed_response)
 
     # Return the transformed response
-    return func.HttpResponse(response_json, status_code=200)
+    return func.HttpResponse(response_json, status_code=200, headers={"Content-Type": "application/json"})
     

@@ -378,4 +378,3 @@ export async function handleFetchGPT4Stream(context: string, searchText: string)
     }
   return finalanswer;
 }
-

@@ -1,10 +1,10 @@
-# Readme for WeDocumentSearchDemoCaseAPI
+# Readme for <webappname>
 
-This repository contains the code for the WeDocumentSearchDemoCaseAPI, a React-based web application that interacts with an Azure Function App. The application allows users to perform document searches based on specific criteria.
+This repository contains the code for the <webappname>, a React-based web application that interacts with an Azure Function App. The application allows users to perform document searches based on specific criteria.
 
 ## Installation
 
-To install and run the WeDocumentSearchDemoCaseAPI locally, follow these steps:
+To install and run the <webappname> locally, follow these steps:
 
 1. Clone the repository to your local machine:
 ```
@@ -21,17 +21,17 @@ cd frontend
 npm install
 ```
 
-4. Run the application:
+4. [Optional] Run the application:
 ```
 npm start
 ```
 
 5. Run the azure function app:
 ```
-fn + f5
+fn + f5 or func start
 ```
 
-Note: You may need to change the endpoint in AbbySearch.tsx from https://wedocumentsearchdemocaseapi.azurewebsites.net/api/search?
+Note: You may need to change the endpoint in chatjticonnect.tsx from https://<webappname>.azurewebsites.net/api/search?
 to /api/search? if you are running the application locally.
 
 ## Build
@@ -47,14 +47,18 @@ This will create a `build` directory with optimized and minified production-read
 ## Deployment to Azure Function App
 
 To deploy the React application to the Azure Function App, follow these steps:
-
-1. Publish the Azure Function App:
+1. Run the azure function app:
 ```
-func azure functionapp publish wedocumentsearchdemocaseapi
+fn + f5 or func start
+```
+
+2. Publish the Azure Function App:
+```
+func azure functionapp publish <functionappname>
 ```
 
 
-2. Create a deployment package by zipping the contents of the `build` directory. You can do this using the following command:
+3. Create a deployment package by zipping the contents of the `build` directory. You can zip it yourself or you can do this using the following command:
 
 ```	
 zip -r build.zip build
@@ -63,9 +67,15 @@ zip -r build.zip build
 3. Deploy the zipped package to the Azure Web App associated with your Function App:
 
 ```
-az webapp deployment source config-zip --resource-group we-documentsearchdemo-rg --name documentsearchUI --src build.zip
+az webapp deployment source config-zip --resource-group <resource group name> --name <web app name> --src build.zip
 ```
 
 
 This will deploy the React application to the Azure Web App, making it accessible to users.
+
+
+
+## API 
+- Frontend api to connect to function app is present in frontend/src/actions/chatjticonnect.ts
+- change the path to the api endpoint like /api/search -> <functionappname>/api/search, /api/download -> <functionappname>/api/download, /api/completion -> <functionappname>/api/completion
 

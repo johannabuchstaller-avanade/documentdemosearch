@@ -9,8 +9,8 @@ import AbbyMain from "./ABBY/AbbyMain"
 import { appConfig } from "config"
 import InputfieldABBY from "components/common/InputFieldABBY"
 import { Search_Background } from "resources"
-import Tooltip from "components/common/Tooltip"
-import InfoIcon from "@mui/icons-material/Info"
+// import Tooltip from "components/common/Tooltip"
+// import InfoIcon from "@mui/icons-material/Info"
 
 import {
   FormControl,
@@ -21,7 +21,7 @@ import {
   Box,
   Stack,
   Grid,
-  FormControlLabel, Radio, RadioGroup, IconButton
+  FormControlLabel, Radio, RadioGroup, IconButton, Button
 } from "@mui/material"
 import { selectSearchType, setSearchType } from "store/ui/slice"
 // import ChatComponent from "./ChatComponent"
@@ -74,13 +74,13 @@ const Section = styled("section")(({ theme }) => ({
 
 const Homepage = () => {
   const queryApp = useAppSelector(selectAppQuery)
-  const searchType = useAppSelector(selectSearchType)
+  // const searchType = useAppSelector(selectSearchType)
   const dispatch = useAppDispatch()
 
-  const handleChangeSearchType = (event: any) => {
-    dispatch(setSearchType(event.target.value as string));
-    dispatch(emptySearchQuery());
-  }
+  // const handleChangeSearchType = (event: any) => {
+  //   dispatch(setSearchType(event.target.value as string));
+  //   dispatch(emptySearchQuery());
+  // }
   return (
     <>
       {!appConfig.searchBarInHeader && (
@@ -91,50 +91,34 @@ const Homepage = () => {
                 displayText={appConfig.searchVariables.searchInputPlaceholder}
               />
             </Grid>
-            <Grid item xs={2} sx={{ marginRight: "18px"}}>
+            {/* <Grid item xs={2} sx={{ marginRight: "18px"}}>
               <Box width={240} bgcolor="white" p={2} borderRadius={1} sx={{display: "flex" }}>
-                {/* <FormControl fullWidth sx={{ backgroundColor: "white" }}>
-                  <InputLabel id="search-type-select-label">
-                    Search Type
-                  </InputLabel>
-                  <Select
-                    labelId="search-type-select-label"
-                    id="search-type-select"
-                    value={searchType}
-                    label="Search Type"
-                    onChange={handleChangeSearchType}
-                    size="small"
-                  >
-                    <MenuItem value="full">Full</MenuItem>
-                    <MenuItem value="semantic">Semantic</MenuItem>
-                  </Select>
-                </FormControl> */}
                   <FormControl fullWidth component="fieldset">
-      <FormLabel component="legend" sx={{ fontSize: "0.6rem" }}>Search Type</FormLabel>
-      <RadioGroup
-        aria-label="search-type"
-        name="search-type"
-        value={searchType}
-        onChange={handleChangeSearchType}
-      >
-        <Stack direction="row" spacing={1} alignItems="center">
-          <FormControlLabel value="full" control={<Radio size="small" />} label="Full" />
-          <IconButton aria-label="info" size="small">
-            <Tooltip title="Full text search is an approach in information retrieval that matches on plain text content stored in an index.">
-              <InfoIcon sx={{ fontSize: 15 }} color="primary" />
-            </Tooltip>
-          </IconButton>
-          <FormControlLabel value="semantic" control={<Radio size="small" />} label="Semantic" />
-          <IconButton aria-label="info" size="small">
-            <Tooltip title="Semantic Search: A focused search based on the meaning and context of your query.">
-              <InfoIcon sx={{ fontSize: 15 }} color="primary" />
-            </Tooltip>
-          </IconButton>
-        </Stack>
-      </RadioGroup>
-    </FormControl>
+                    <FormLabel component="legend" sx={{ fontSize: "0.6rem" }}>Search Type</FormLabel>
+                    <RadioGroup
+                      aria-label="search-type"
+                      name="search-type"
+                      value={searchType}
+                      onChange={handleChangeSearchType}
+                    >
+                      <Stack direction="row" spacing={1} alignItems="center">
+                        <FormControlLabel value="full" control={<Radio size="small" />} label="Full" />
+                        <IconButton aria-label="info" size="small">
+                          <Tooltip title="Full text search is an approach in information retrieval that matches on plain text content stored in an index.">
+                            <InfoIcon sx={{ fontSize: 15 }} color="primary" />
+                          </Tooltip>
+                        </IconButton>
+                        <FormControlLabel value="semantic" control={<Radio size="small" />} label="Semantic" />
+                        <IconButton aria-label="info" size="small">
+                          <Tooltip title="Semantic Search: A focused search based on the meaning and context of your query.">
+                            <InfoIcon sx={{ fontSize: 15 }} color="primary" />
+                          </Tooltip>
+                        </IconButton>
+                      </Stack>
+                    </RadioGroup>
+                  </FormControl>
               </Box>
-            </Grid>
+            </Grid> */}
           </Grid>
         </SearchSection>
       )}
@@ -187,18 +171,8 @@ const Homepage = () => {
           )}
         </>
       )}
-      {
-      /* {
-      appConfig.showChatbot && (
-        <>
-        <SimpleChatPage />
-        <SimpleChatMenu />
-        </>
-      )
-    } */
-    }
-    {/* <ChatComponent /> */}
     </>
+    
   )
 }
 

@@ -1,4 +1,6 @@
 import * as React from "react"
+import axios from "axios"
+import AbbyResult from "./AbbyResult"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
 import { Avatar } from "@mui/material"
@@ -14,22 +16,115 @@ import { getSearchResults } from 'actions/chatjticonnect';
 export default function AbbySearch(props: any) {
   const [searchRes, setSearchRes] = React.useState<any[]>([])
   
+  // const [searchAnswer, setSearchAnswer] = React.useState("")
   const dispatch = useAppDispatch()
   const loading = useAppSelector(selectLoading)
+  //const searchType = useAppSelector(selectSearchType)
 
+  //const index = appConfig.searchVariables.indexName
   const lang = appConfig.searchVariables.language
- 
+  //const semsconf = appConfig.searchVariables.semanticConfigName
+
+
+  
 
   React.useEffect(() => {
     dispatch(setLoading(true))
+    // const getDocumentLinks = async (fileNames: any) => {
+    //   //https://wedocumentsearchdemocaseapi.azurewebsites.net/api/document
+    //   // https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net
+    //     const response = await axios.post('https://function-msfnex54-05-ai-data-parcing-prd.azurewebsites.net/api/document', { fileNames: fileNames, containerName: appConfig.searchVariables.documentContainerName});
+    //     return response.data;
+    // };
 
     const searchAzure = async () => {
       if (props.searchText) {
+        const body = {
+          q: props.searchText,
+          top: 3,
+          // skip: 0,
+          // type: searchType,
+          // lang: lang,
+          // indexname: index,
+          // semsconfig: semsconf,
+        }
         	
-        getSearchResults(props.searchText)
+        axios.post("/api/search?", body)
           .then((response) => {
-       
+            console.log("Search succeeded!")
+            // setSearchRes(response.data.results)
+            // setSearchAnswer(response.data.answer)
+            console.log("Search results: ", response.data)
+    
             if (response.data.results.length > 0) {
+              // console.log("Search results: ", response.data.results)
+              
+              // const fileNames = response.data.results.map(
+              //   (item: any) => item.document.document_filename
+              // )
+
+              // console.log("File names: ", fileNames)
+    
+              // getDocumentLinks(fileNames)
+              //   .then(documentLinks => {
+              //     let titlesAndSources;
+    
+              //     if (documentLinks && documentLinks.length > 0) {
+              //         titlesAndSources = response.data.results.map((item: any) => {
+              //             const documentName = item.document.document_filename;
+              //             const documentUrlObj = documentLinks.find((urlObj: any) => urlObj[documentName]);
+              //             const documentUrl = documentUrlObj ? documentUrlObj[documentName] : null;
+    
+              //             return {
+              //                 title: item.document.title,
+              //                 source: item.document.document_filename,
+              //                 page: item.document.page_number,
+              //                 content: item.document.content,
+              //                 html: item.document.content_html,
+              //                 score: item.score,
+              //                 dataType: item.document.dataType,
+              //                 documentSourceLink: item.document.document_link,
+              //                 documentUrl,
+              //             };
+              //         });
+              //     } else {
+              //         titlesAndSources = response.data.results.map((item: any) => ({
+              //             title: item.document.title,
+              //             source: item.document.document_filename,
+              //             page: item.document.page_number,
+              //             content: item.document.content,
+              //             score: item.score,
+              //             dataType: item.document.dataType,
+              //             documentSourceLink: item.document.document_link,
+              //             html: item.document.content_html
+              //         }));
+              //     }
+              //     setSearchRes(titlesAndSources)
+    
+              //     let text = titlesAndSources
+              //       .filter((doc: any) => doc.score > 0.5)
+              //       .map(
+              //         (doc: any, index: number) =>
+              //           `Context ${index + 1}:\n\n ${
+              //             doc.content
+              //           }\n\n document Name: ${
+              //             doc.source
+              //           }\n\n page number: ${String(doc.page)
+              //           }\n\n document link: ${doc.documentUrl}`
+              //       )
+              //       .join("\n\n")
+
+                 
+    
+              //     props.handleTitleSources(titlesAndSources);
+              //     props.handleLanguage(lang)
+              //     props.handleSearchResult(text)
+              //     // console.log("Search results: ", titlesAndSources)
+              //   })
+              //   .catch(error => {
+              //     console.error("Error fetching document links: ", error);
+              //     // Handle error state or notify user here
+              //   });
                const titlesAndSources = response.data.results.map((item: any) => ({
                   id: item.document.id,
                   title: item.document.title,
@@ -42,7 +137,6 @@ export default function AbbySearch(props: any) {
                   html: item.document.content_html,
                   filename: item.document.document_filename
               }));
-
               setSearchRes(titlesAndSources)
                    let text = titlesAndSources
                     .filter((doc: any) => doc.score > 0.5)

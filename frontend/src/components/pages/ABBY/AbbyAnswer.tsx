@@ -6,6 +6,7 @@ import Tooltip from 'components/common/Tooltip';
 import { handleFetchGPT4 } from 'actions/openaiAnswer';
 import { useAppDispatch, useAppSelector } from 'store/hooks'
 import { setLoading, selectLoading } from 'store/ui/slice';
+import { getResponseFromOpenAI } from 'actions/chatjticonnect';
 
 export default function AbbyAnswer(props: any) {
     const [ answertext, setAnswertext ] = React.useState('');  
@@ -18,12 +19,21 @@ export default function AbbyAnswer(props: any) {
         const generateAnswer = async() => {
             if(props.searchText) {
            
-                handleFetchGPT4(props.context, props.searchText)
-                .then((result) => {
+                // handleFetchGPT4(props.context, props.searchText)
+                // .then((result) => {
                                      
-                        setAnswertext(result)
-                        dispatch(setLoading(false));
+                //         setAnswertext(result)
+                //         dispatch(setLoading(false));
                     
+                // })
+                // .catch(error => {
+                //     console.error(error);
+                // });
+       
+                await getResponseFromOpenAI(props.searchText, props.context)
+                .then((result) => {
+                    setAnswertext(result)
+                    dispatch(setLoading(false));
                 })
                 .catch(error => {
                     console.error(error);

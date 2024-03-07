@@ -14,6 +14,7 @@ import { saveAs } from "file-saver"
 import GetAppIcon from "@mui/icons-material/GetApp"
 import Tooltip from "components/common/Tooltip"
 import HtmlIframe from "./HtmlIframe"
+import { handleDocumentDownload } from "actions/chatjticonnect"
 
 const htmlstyle = `
 <style>
@@ -46,6 +47,8 @@ export default function AccordionResult({
   title,
   pdfUrl,
   documentSourceLink,
+  id,
+  filename
 }: any) {
   const htmlstring = htmlstyle + html
 
@@ -71,30 +74,30 @@ export default function AccordionResult({
     setTableForDownload(table)
   }, [])
 
-  const handleDownload = (e: React.MouseEvent) => {
-    e.stopPropagation()
+  // const handleDownload = (e: React.MouseEvent) => {
+  //   e.stopPropagation()
 
-    if (!tableForDownload) return
+  //   if (!tableForDownload) return
 
-    const wb = XLSX.utils.table_to_book(tableForDownload, { sheet: "Sheet JS" })
-    const wbout = XLSX.write(wb, {
-      bookType: "xlsx",
-      bookSST: true,
-      type: "binary",
-    })
+  //   const wb = XLSX.utils.table_to_book(tableForDownload, { sheet: "Sheet JS" })
+  //   const wbout = XLSX.write(wb, {
+  //     bookType: "xlsx",
+  //     bookSST: true,
+  //     type: "binary",
+  //   })
 
-    function s2ab(s: string) {
-      const buf = new ArrayBuffer(s.length)
-      const view = new Uint8Array(buf)
-      for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
-      return buf
-    }
+  //   function s2ab(s: string) {
+  //     const buf = new ArrayBuffer(s.length)
+  //     const view = new Uint8Array(buf)
+  //     for (let i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xff
+  //     return buf
+  //   }
 
-    saveAs(
-      new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
-      "test.xlsx"
-    )
-  }
+  //   saveAs(
+  //     new Blob([s2ab(wbout)], { type: "application/octet-stream" }),
+  //     "test.xlsx"
+  //   )
+  // }
 
   return (
     <Accordion sx={{ bgcolor: "background.paper", borderRadius: "10px" }}>
@@ -146,9 +149,17 @@ export default function AccordionResult({
             </Typography>
           )}
         </Stack>
-        <Tooltip title="Download as excel" placement="top">
+        {/* <Tooltip title="Download as excel" placement="top">
           <Button
             onClick={handleDownload}
+            sx={{ minWidth: "auto", p: 1, mr: 10 }}
+          >
+            <GetAppIcon />
+          </Button>
+        </Tooltip> */}
+         <Tooltip title="Download file" placement="top">
+          <Button
+            onClick={(e) => handleDocumentDownload(e,id, filename)} 
             sx={{ minWidth: "auto", p: 1, mr: 10 }}
           >
             <GetAppIcon />
