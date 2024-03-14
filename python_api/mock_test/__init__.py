@@ -9,10 +9,6 @@ tenant_id = os.environ["tenant_id"]
 client_id =os.environ["client_id"]
 client_secret =os.environ["client_secret"]
 base_url=os.environ["base_url"]
-#client=ApiClient(tenant_id, client_id, client_secret, base_url)
-
-#context = os.environ["SAMPLE_ENVIRONMENT"]
-context ="context"
 
 def main(req: func.HttpRequest) -> func.HttpResponse:
     client=ApiClient(tenant_id, client_id, client_secret, base_url)

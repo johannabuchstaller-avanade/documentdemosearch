@@ -22,15 +22,12 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     top = req_body.get("top")
     searchkeyword = req_body.get("q")
    
-    #llmrerank = bool(req_body.get("LlmReRank"))
-    #llmrerankcontext = req_body.get("LlmReRankContext")
-    #libraryids = req_body.get("LibraryIds")
     response = client.search_documents({
         "Top" : top,
         "SearchKeyword" : searchkeyword,
         "LlmReRank" : False,
         #"LlmReRankContext" : llmrerankcontext,
-        "LibraryIds" : [48]
+        "LibraryIds" : [103]
     })
     transformed_response = transform_document_data_search(response)
 
