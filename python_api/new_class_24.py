@@ -52,7 +52,7 @@ class ApiClient:
 
         # Prepare connection and request details
         conn = http.client.HTTPSConnection(f"login.microsoftonline.com")
-        payload = f'client_id={self.client_id}&client_secret={self.client_secret}&grant_type=client_credentials'
+        payload = f'client_id={self.client_id}&client_secret={self.client_secret}&scope=api%3A%2F%2F8b75aa22-29f8-459b-a52b-6b23fb653003%2F.default&grant_type=client_credentials'
         headers = {
             'Content-Type': 'application/x-www-form-urlencoded',
         }
@@ -124,6 +124,22 @@ class ApiClient:
             return response.json()
         else:
             return None
+    def get_chat_completion_4(self, request_body):
+        url = f"{self.base_url}/api/openai/gpt4turbo/chat/completions"
+
+        headers = self.get_headers()
+
+        response = requests.post(url, headers=headers, json=request_body)
+        if response.status_code == 200:
+            return response.json()
+        elif response.status_code == 403:
+            print("Forbidden: You don't have permission to access this resource.")
+        elif response.status_code == 404:
+            print("Not Found: The document was not found.")
+        else:
+            return (response.status_code, response.text)
+        
+
         
     def search_documents(self, request_body):
         """Semantic search, hand over request body in json format as shown below, adjust parameters accordingly:

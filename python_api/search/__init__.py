@@ -27,7 +27,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         "SearchKeyword" : searchkeyword,
         "LlmReRank" : False,
         #"LlmReRankContext" : llmrerankcontext,
-        "LibraryIds" : [103]
+        "LibraryIds" : [143]
     })
     transformed_response = transform_document_data_search(response)
 

@@ -18,25 +18,18 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Invalid request body. Please provide a valid JSON object.", status_code=400)
     
     # Extract request parameters
-    model = req_body.get("Model")
-    messages = req_body.get("Messages")
-    max_tokens = req_body.get("MaxTokens")
-    temperature = req_body.get("Temperature")
-    top_p = req_body.get("TopP")
-    presence_penalty = req_body.get("PresencePenalty")
-    frequency_penalty = req_body.get("FrequencyPenalty")
+    #model = req_body.get("Model")
+    messages = req_body.get("messages")
+    temperature=req_body.get("temperature")
 
     # Make the API call with the extracted parameters
-    response = client.get_chat_completion({
-        "Model": model,
-        "Messages": messages,
-        "MaxTokens": max_tokens,
-        "Temperature": temperature,
-        "TopP": top_p,
-        "PresencePenalty": presence_penalty,
-        "FrequencyPenalty": frequency_penalty
+    response = client.get_chat_completion_4({
+        "temperature": temperature,
+        "messages": messages
+
     })
-    response_json = json.dumps(response)
+    #response_json = json.dumps(response)
+    message_content = response['choices'][0]['message']['content']
 
     # Return the response
-    return func.HttpResponse(response_json, status_code=200)
+    return func.HttpResponse(message_content, status_code=200)
