@@ -18,7 +18,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse("Invalid request body. Please provide a valid JSON object.", status_code=400)
     
     # Extract request parameters
-    #model = req_body.get("Model")
     messages = req_body.get("messages")
     temperature=req_body.get("temperature")
 
@@ -28,7 +27,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         "messages": messages
 
     })
-    #response_json = json.dumps(response)
     message_content = response['choices'][0]['message']['content']
 
     # Return the response

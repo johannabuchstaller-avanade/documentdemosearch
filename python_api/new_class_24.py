@@ -76,14 +76,6 @@ class ApiClient:
         """Check if the current token is valid."""
         return self.token_expiry and datetime.now() < self.token_expiry
 
-    # def get_headers(self):
-    #     """Ensure token is valid and return headers for API requests."""
-    #     if not self.is_token_valid():
-    #         self.fetch_token()
-    #     return {
-    #         'Authorization': f'Bearer {self.token}',
-    #         'Content-Type': 'application/json'
-    #     }
     def get_headers(self):
         """Ensure token is valid and return headers for API requests."""
         if not self.is_token_valid():
@@ -158,46 +150,6 @@ class ApiClient:
             return response.json()
         else:
             return None
-
-
-
-    # def download_document(self, document_id):
-    #     """Download documents by document id. Hand over request body accordingly:
-    #     {
-    #     "DocumentId": 546
-    #     }
-    #     """
-    #     url = f"{self.base_url}/api/documents/{document_id}/download"
-    #     headers = self.get_headers()
-    #     filename=f"document{document_id}.pdf"
-    #     #print(url)
-    #     # Specify the folder for download
-    #     # save_folder = os.path.join(os.path.dirname(__file__), "downloads")
-        
-    #     # if not os.path.exists(save_folder):
-    #     #     os.makedirs(save_folder)
-        
-    #     # filename = f"document{document_id}.pdf"
-    #     # full_file_path = os.path.join(save_folder, filename)
-        
-    #     response = requests.get(url, headers=headers, stream=True)
-        
-    #     if response.status_code == 200:
-    #         content_disposition = f"attachment; filename={filename}"
-
-       
-    #         return {"body": response.content, "headers": {"Content-Disposition": content_disposition, "Content-Type": "application/pdf"}}
-    #         # with open(full_file_path, "wb") as f:
-    #         #     for chunk in response.iter_content(chunk_size=8192):
-    #         #         f.write(chunk)
-            
-    #         # # Return the path where the document is saved within the repository
-    #         # return full_file_path
-    #     elif response.status_code == 404:
-    #         return "Document not found"
-    #     else:
-    #         return response.content
-
 
 
     def download_document(self, document_id):
